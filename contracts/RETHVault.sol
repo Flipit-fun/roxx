@@ -19,8 +19,9 @@ pragma solidity ^0.8.24;
 ///           realized loss handled off-chain would show as a lower balance and
 ///           the rate would reflect that honestly.
 ///         - No owner controls the rate. addYield() is permissionless.
-///         - A virtual offset (1e3 shares / 1 wei asset) blocks the classic
-///           first-depositor inflation attack.
+///         - A 1:1 virtual offset (1 share / 1 wei asset) keeps the rate at
+///           exactly 1 ETH = 1 rETH from the first deposit and avoids
+///           division by zero on an empty vault.
 ///
 ///         Yield is generated off-chain by the protocol's staking / lending
 ///         and returned to this contract via addYield(). The target rate is
@@ -35,8 +36,10 @@ contract RETHVault {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    // Virtual offsets for inflation-attack resistance (OZ ERC-4626 approach).
-    uint256 private constant VIRTUAL_SHARES = 1e3;
+    // Virtual offsets. Kept at 1:1 so the vault reads exactly 1 ETH = 1 rETH
+    // from the very first deposit, while still avoiding division by zero and
+    // keeping a basic guard against the empty-vault edge case.
+    uint256 private constant VIRTUAL_SHARES = 1;
     uint256 private constant VIRTUAL_ASSETS = 1;
 
     // Accounting of ETH backing the shares. Kept explicit (rather than reading

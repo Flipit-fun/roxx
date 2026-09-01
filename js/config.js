@@ -10,7 +10,7 @@ window.ROXX_CONFIG = {
   network: 'mainnet',
 
   // Deployed RETHVault (accruing vault) on Robinhood Chain mainnet (chain 4663).
-  RETH_ADDRESS: '0x86B0e0de657ddCB85D2cf4928C1459cFDfB832Eb',
+  RETH_ADDRESS: '0x7D2c73f3791268e45c957b75D6aBFde707FA6000',
 
   networks: {
     mainnet: {
