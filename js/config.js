@@ -9,9 +9,8 @@ window.ROXX_CONFIG = {
   // Which network the front end targets: "mainnet" or "testnet".
   network: 'mainnet',
 
-  // Paste the deployed rETH mint contract address here after deploying.
-  // While empty, the app shows "To Be Announced" and Connect still works.
-  RETH_ADDRESS: '',
+  // Deployed RETHVault (accruing vault) on Robinhood Chain mainnet (chain 4663).
+  RETH_ADDRESS: '0x86B0e0de657ddCB85D2cf4928C1459cFDfB832Eb',
 
   networks: {
     mainnet: {
