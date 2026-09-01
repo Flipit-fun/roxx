@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roxx — Mint rETH on Robinhood Chain</title>
+  <meta name="description" content="Mint rETH with ETH on Robinhood Chain. rETH accrues value from the protocol's staking and lending yield, and is withdrawable to ETH at the live rate." />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@100,200,300,400,450,500,600,700,800,900&f[]=general-sans@400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <!-- =========================== HEADER =========================== -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="#top" aria-label="Roxx home">
+        <img class="brand__mark"
+             src="logo.png"
+             alt="" aria-hidden="true" />
+        <span class="brand__name">Roxx</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="#argument">Argument</a>
+        <a class="nav__link" href="#mechanic">Mechanic</a>
+        <a class="nav__link" href="#mint">Mint rETH</a>
+        <a class="nav__link" href="#status">Status</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="header-social" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener" aria-label="Roxx on X (opens in new tab)" title="Roxx on X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.9h1.73L8.28 3.98H6.42L17.8 19.9Z"/></svg>
+        </a>
+        <a class="button button--solid" href="app.html">Open app</a>
+      </div>
+
+      <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="menu-toggle__bar"></span>
+        <span class="menu-toggle__bar"></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <a class="mobile-menu__link" href="#argument">Argument</a>
+      <a class="mobile-menu__link" href="#mechanic">Mechanic</a>
+      <a class="mobile-menu__link" href="#mint">Mint rETH</a>
+      <a class="mobile-menu__link" href="#status">Status</a>
+      <a class="mobile-menu__link" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener">X / @TryRoxxApp</a>
+      <a class="button button--solid mobile-menu__action" href="app.html">Open app</a>
+    </div>
+  </header>
+
+  <!-- =========================== SIDE RAIL =========================== -->
+  <aside class="rail" aria-label="Section index">
+    <span class="rail__brand">ROXX</span>
+    <span class="rail__tag">// TOKEN</span>
+    <ol class="rail__list">
+      <li><a href="#argument"><span class="rail__num">01</span><span class="rail__label">THESIS</span></a></li>
+      <li><a href="#mechanic"><span class="rail__num">02</span><span class="rail__label">MECHANIC</span></a></li>
+      <li><a href="#mint"><span class="rail__num">03</span><span class="rail__label">MINT_RETH</span></a></li>
+    </ol>
+    <span class="rail__count">05 / 05</span>
+  </aside>
+
+  <!-- =========================== MAIN =========================== -->
+  <main id="top">
+
+    <!-- HERO CAMERA SCENE -->
+    <section class="scene" id="scene">
+      <div class="scene__viewport">
+        <div class="scene__backdrop">
+          <div class="scene__camera">
+            <img class="scene__photo"
+                 src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_001417_948d6b75-1610-4ebb-b816-95ded6e27ce1.png"
+                 alt="" aria-hidden="true" />
+          </div>
+          <div class="scene__glow" aria-hidden="true"></div>
+        </div>
+
+        <div class="hero__content">
+          <div class="hero__badge">
+            <div class="hero__badge-row">
+              <span class="hero__badge-ticker">rETH</span>
+              <span class="hero__badge-div" aria-hidden="true"></span>
+              <span class="hero__badge-std">[ ERC-20 ]</span>
+              <span class="hero__badge-div" aria-hidden="true"></span>
+              <span class="hero__badge-net">MAINNET</span>
+            </div>
+          </div>
+
+          <h1 class="hero__title">
+            <span class="line"><span class="line__in">Yield that </span></span>
+            <span class="line"><span class="line__in">never stops being </span></span>
+            <span class="line"><span class="line__in">an ordinary token</span></span>
+          </h1>
+
+          <p class="hero__subtitle">Fees stay out of the promise: deposit ETH, receive a plain rETH token, and redeem 1:1 whenever liquidity is available.</p>
+          <div class="hero__ca hero__ca--announce" aria-label="Contract address announcement">
+            <span class="hero__ca-label">CA</span>
+            <span class="hero__ca-addr">To Be Announced</span>
+          </div>        </div>
+
+        <div class="platform__content">
+          <span class="pill">
+            <span class="pill__dot" aria-hidden="true"></span>
+            Live Data Stream
+          </span>
+          <h2 class="platform__title">One deposit that works in two places at the same time</h2>
+
+          <div class="shot">
+            <div class="shot__window">
+              <div class="shot__toolbar">
+                <span class="tl tl--red" aria-hidden="true"></span>
+                <span class="tl tl--yellow" aria-hidden="true"></span>
+                <span class="tl tl--green" aria-hidden="true"></span>
+                <svg class="tb-icon tb-sidebar" width="14" height="11" viewBox="0 0 14 11" fill="none" aria-hidden="true">
+                  <rect x="0.5" y="0.5" width="13" height="10" rx="2" stroke="#fff" stroke-opacity="0.5"/>
+                  <line x1="4.5" y1="0.5" x2="4.5" y2="10.5" stroke="#fff" stroke-opacity="0.5"/>
+                </svg>
+                <div class="tb-history">
+                  <svg class="tb-icon" width="24" height="20" viewBox="0 0 24 20" fill="none" aria-hidden="true">
+                    <path d="M14 6L10 10L14 14" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg class="tb-icon" width="24" height="20" viewBox="0 0 24 20" fill="none" aria-hidden="true">
+                    <path d="M10 6L14 10L10 14" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="tb-address">
+                  <svg class="tb-shield" width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden="true">
+                    <path d="M5 0.5L9 2V6C9 8.5 7.2 10.5 5 11.5C2.8 10.5 1 8.5 1 6V2L5 0.5Z" stroke="#fff" stroke-opacity="0.5" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="tb-url">
+                    <div class="tb-url__inner">
+                      <svg class="tb-lock" width="6" height="9" viewBox="0 0 6 9" fill="none" aria-hidden="true">
+                        <rect x="0.5" y="3.5" width="5" height="5" rx="1" stroke="#fff" stroke-opacity="0.5"/>
+                        <path d="M1.5 3.5V2.5C1.5 1.4 2.1 0.5 3 0.5C3.9 0.5 4.5 1.4 4.5 2.5V3.5" stroke="#fff" stroke-opacity="0.5"/>
+                      </svg>
+                      <span class="tb-url__text">roxx.fi</span>
+                    </div>
+                    <svg class="tb-reload" width="8" height="9" viewBox="0 0 8 9" fill="none" aria-hidden="true">
+                      <path d="M6.5 2.5C5.9 1.6 4.9 1 3.8 1C2 1 0.5 2.6 0.5 4.5C0.5 6.4 2 8 3.8 8C5.3 8 6.6 6.9 7 5.5" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round"/>
+                      <path d="M6.5 0.5V2.5H4.5" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="tb-tools">
+                  <svg class="tb-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1V8M6 8L3.5 5.5M6 8L8.5 5.5M2 10H10" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg class="tb-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 8V2M6 2L3.5 4.5M6 2L8.5 4.5M2 8V10H10V8" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg class="tb-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 2V10M2 6H10" stroke="#fff" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg class="tb-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" stroke="#fff" stroke-opacity="0.5"/><line x1="4.5" y1="1.5" x2="4.5" y2="10.5" stroke="#fff" stroke-opacity="0.5"/></svg>
+                </div>
+              </div>
+
+              <nav class="dash-nav" aria-label="Product">
+                <a class="dash-nav__item is-active" href="#top"><svg class="dash-nav__icon" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="1" y="1" width="4.5" height="4.5" rx="1" stroke="#fff"/><rect x="7.5" y="1" width="4.5" height="4.5" rx="1" stroke="#fff"/><rect x="1" y="7.5" width="4.5" height="4.5" rx="1" stroke="#fff"/><rect x="7.5" y="7.5" width="4.5" height="4.5" rx="1" stroke="#fff"/></svg><span>Overview</span></a>
+                <a class="dash-nav__item" href="#top"><svg class="dash-nav__icon" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><ellipse cx="6.5" cy="3" rx="5" ry="2" stroke="#fff"/><path d="M1.5 3V10C1.5 11.1 3.7 12 6.5 12C9.3 12 11.5 11.1 11.5 10V3" stroke="#fff"/></svg><span>Token</span></a>
+                <a class="dash-nav__item" href="#top"><svg class="dash-nav__icon" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="3" cy="3" r="1.8" stroke="#fff"/><circle cx="10" cy="3" r="1.8" stroke="#fff"/><circle cx="6.5" cy="10" r="1.8" stroke="#fff"/><path d="M4.3 4.3L6 8.5M9 4.3L7 8.5" stroke="#fff"/></svg><span>Markets</span></a>
+                <a class="dash-nav__item" href="#top"><svg class="dash-nav__icon" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1 12V7M4.5 12V4M8 12V8M11.5 12V2" stroke="#fff" stroke-linecap="round"/></svg><span>Analytics</span></a>
+                <a class="dash-nav__item" href="#top"><svg class="dash-nav__icon" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="2.2" stroke="#fff"/><path d="M6.5 1V2.5M6.5 10.5V12M1 6.5H2.5M10.5 6.5H12M2.6 2.6L3.7 3.7M9.3 9.3L10.4 10.4M10.4 2.6L9.3 3.7M3.7 9.3L2.6 10.4" stroke="#fff" stroke-linecap="round"/></svg><span>Config</span></a>
+                <div class="dash-user">
+                  <span class="dash-user__avatar-wrap">
+                    <img class="dash-user__avatar" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_001457_3aac5e0c-eb57-4743-867b-c738490ef2a3.png" alt="" aria-hidden="true" />
+                    <span class="dash-user__status" aria-hidden="true"></span>
+                  </span>
+                  <span class="dash-user__name">Jane D.</span>
+                </div>
+              </nav>
+
+              <div class="tabs">
+                <span class="tabs__item is-active">Mint</span>
+                <span class="tabs__item">Redeem</span>
+                <span class="tabs__item">rETH</span>
+              </div>
+
+              <div class="card card--revenue">
+                <div class="card__title">ETH locked</div>
+                <div class="card__figure" id="dash-eth-locked">—<span class="card__figure-dec"> ETH</span></div>
+                <div class="card__delta"><span class="card__tag">100%</span><span class="card__note">backing, held in contract</span></div>
+                <svg class="chart-area" width="245.5" height="69.5" viewBox="0 0 245.5 69.5" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                  <defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+                  <line x1="11.5" y1="0" x2="11.5" y2="69.5" stroke="#fff" stroke-opacity="0.1"/><line x1="66.5" y1="0" x2="66.5" y2="69.5" stroke="#fff" stroke-opacity="0.1"/><line x1="121.5" y1="0" x2="121.5" y2="69.5" stroke="#fff" stroke-opacity="0.1"/><line x1="176.5" y1="0" x2="176.5" y2="69.5" stroke="#fff" stroke-opacity="0.1"/><line x1="231.5" y1="0" x2="231.5" y2="69.5" stroke="#fff" stroke-opacity="0.1"/>
+                  <line x1="8" y1="64" x2="238" y2="64" stroke="#fff" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="1 4"/>
+                  <path d="M0 52 L30 44 L60 48 L90 30 L120 36 L150 20 L180 26 L210 12 L245.5 18 L245.5 69.5 L0 69.5 Z" fill="url(#areaFill)"/>
+                  <path d="M0 52 L30 44 L60 48 L90 30 L120 36 L150 20 L180 26 L210 12 L245.5 18" stroke="#fff" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+                </svg>
+                <div class="chart-axis"><span style="left:3px">0d</span><span style="left:59px">60d</span><span style="left:114px">120d</span><span style="left:169px">180d</span><span style="left:223px">180d</span></div>
+              </div>
+
+              <div class="card card--leads">
+                <div class="card__title">Peg</div>
+                <div class="card__figure">1.00000<span class="card__figure-dec"></span></div>
+                <div class="card__delta"><span class="card__tag">1 : 1</span><span class="card__note">ETH per rETH</span></div>
+                <svg class="chart-matrix" width="238" height="109" viewBox="0 0 238 109" fill="none" aria-hidden="true"></svg>
+                <div class="leads-stats">
+                  <div class="stat" style="left:0"><div class="stat__label">rETH supply</div><div class="stat__value" id="dash-supply">—</div></div>
+                  <div class="stat" style="left:128px"><div class="stat__label">Peg drift</div><div class="stat__value">0.00%</div></div>
+                </div>
+              </div>
+
+              <div class="card card--sales">
+                <div class="card__title">Your rETH</div>
+                <div class="card__figure" id="dash-your-reth">—<span class="card__figure-dec"> rETH</span></div>
+                <div class="card__delta"><span class="card__tag">1 : 1</span><span class="card__note">redeemable for ETH</span></div>
+                <svg class="chart-bars" width="246" height="120" viewBox="0 0 246 120" fill="none" aria-hidden="true">
+                  <line x1="0" y1="0.5" x2="246" y2="0.5" stroke="#fff" stroke-opacity="0.1"/><line x1="60" y1="0.5" x2="117" y2="0.5" stroke="#fff" stroke-width="1"/><line x1="123" y1="0.5" x2="233" y2="0.5" stroke="#fff" stroke-width="1"/>
+                  <g><rect x="0" y="70" width="35" height="50" fill="#D9D9D9" fill-opacity="0.1"/><rect x="42" y="55" width="35" height="65" fill="#D9D9D9" fill-opacity="0.1"/><rect x="84" y="40" width="35" height="80" fill="#D9D9D9" fill-opacity="0.1"/><rect x="126" y="60" width="35" height="60" fill="#D9D9D9" fill-opacity="0.1"/><rect x="168" y="28" width="35" height="92" fill="#D9D9D9" fill-opacity="0.1"/><rect x="210" y="45" width="35" height="75" fill="#D9D9D9" fill-opacity="0.1"/></g>
+                  <g><rect x="0" y="70" width="35" height="2" fill="#fff"/><rect x="42" y="55" width="35" height="2" fill="#fff"/><rect x="84" y="40" width="35" height="2" fill="#fff"/><rect x="126" y="60" width="35" height="2" fill="#fff"/><rect x="168" y="28" width="35" height="2" fill="#fff"/><rect x="210" y="45" width="35" height="2" fill="#fff"/></g>
+                </svg>
+                <div class="sales-stats">
+                  <div class="stat" style="left:0"><div class="stat__label">Mint fee</div><div class="stat__value stat__value--sm">0%</div></div>
+                  <div class="stat" style="left:120px"><div class="stat__label">Redeem fee</div><div class="stat__value stat__value--sm">0%</div></div>
+                </div>
+              </div>
+
+              <div class="card card--log">
+                <div class="card__title">Contract log</div>
+                <div class="log-list">
+                  <div class="log-row"><span class="log-tag">[MINT]</span><span class="log-msg">mint() — 1 ETH in, 1 rETH out</span><span class="log-status">DONE</span></div>
+                  <div class="log-row"><span class="log-tag">[RDM]</span><span class="log-msg">redeem(amount) — 1 rETH burned for 1 ETH</span></div>
+                  <div class="log-row"><span class="log-tag">[XFR]</span><span class="log-msg">transfer(to, amount) — rETH sent as plain ERC-20</span></div>
+                </div>
+              </div>
+
+              <div class="card card--trajectory">
+                <div class="card__title">Reserve check</div>
+                <div class="trajectory-stats">
+                  <div class="stat" style="left:0"><div class="stat__label">ETH in contract</div><div class="stat__value" id="dash-eth-2">—</div></div>
+                  <div class="stat" style="left:141px"><div class="stat__label">rETH supply</div><div class="stat__value" id="dash-supply-2">—</div></div>
+                  <div class="stat" style="left:275px"><div class="stat__label">Fully backed</div><div class="stat__value">100%</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== CONTENT SECTIONS =========================== -->
+    <div class="page">
+
+      <!-- Intro brief strip -->
+      <section class="brief" id="brief">
+        <p class="brief__kicker">A simple 1:1 token, built for clear exits</p>
+        <p class="brief__body">Roxx turns deposited ETH into a plain rETH token at a one-for-one rate. Connect your wallet, mint from this page or the dedicated app, and redeem when you want to return to ETH.</p>
+        <a class="brief__cta" href="app.html">Open the mint app</a>
+      </section>
+
+      <!-- 01 THESIS -->
+      <section class="sec" id="argument">
+        <div class="sec__head">
+          <span class="sec__num">01</span>
+          <h2 class="sec__title">The argument</h2>
+          <p class="sec__lede">rETH is designed around a clear promise: the token is minted only when ETH enters the contract, and each token can be redeemed against the same amount of ETH.</p>
+        </div>
+
+        <div class="argcols">
+          <div class="argcol argcol--muted">
+            <h3 class="argcol__title">What rETH does not promise</h3>
+            <ul class="argcol__list">
+              <li>No fixed APY or manual return promise.</li>
+              <li>No price oracle or synthetic exposure.</li>
+              <li>No hidden reward stream.</li>
+            </ul>
+            <p class="argcol__foot">The token represents deposited ETH, not a made-up performance number.</p>
+          </div>
+
+          <div class="argcol argcol--live">
+            <h3 class="argcol__title">What rETH does provide</h3>
+            <ul class="argcol__list">
+              <li>One ETH deposited mints one rETH.</li>
+              <li>rETH remains a transferable ERC-20.</li>
+              <li>Burning rETH requests the matching ETH.</li>
+            </ul>
+            <p class="argcol__foot">The balance and backing can be checked directly on Robinhood Chain.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 MECHANIC -->
+      <section class="sec" id="mechanic">
+        <div class="sec__head">
+          <span class="sec__num">02</span>
+          <h2 class="sec__title">The mechanic</h2>
+          <p class="sec__lede">Four clear actions describe the entire rETH lifecycle. ETH enters, a plain ERC-20 leaves, and the same token can be redeemed back through the contract.</p>
+        </div>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step__n">1</span>
+            <h3 class="step__title">Deposit</h3>
+            <code class="step__call">mint() payable</code>
+            <p class="step__body">Send ETH to the contract and it mints the same amount of rETH to your wallet.</p>
+          </li>
+          <li class="step">
+            <span class="step__n">2</span>
+            <h3 class="step__title">Hold</h3>
+            <code class="step__call">transfer(to, amount)</code>
+            <p class="step__body">rETH is a plain ERC-20. Send it to another wallet or use it wherever compatible tokens are accepted.</p>
+          </li>
+          <li class="step">
+            <span class="step__n">3</span>
+            <h3 class="step__title">Redeem</h3>
+            <code class="step__call">redeem(amount)</code>
+            <p class="step__body">Burn rETH and the contract sends the same amount of ETH back to your wallet.</p>
+          </li>
+          <li class="step">
+            <span class="step__n">4</span>
+            <h3 class="step__title">Verify</h3>
+            <code class="step__call">balanceOf / totalSupply</code>
+            <p class="step__body">Compare the contract's ETH balance with rETH total supply to check the 1:1 backing relationship.</p>
+          </li>
+        </ol>
+
+        <div class="never">
+          <h3 class="never__title">The rETH lifecycle</h3>
+          <p class="never__lede">Every action is visible and tied to the same 1:1 backing rule.</p>
+          <div class="never__grid">
+            <div class="never__item"><h4>Deposit ETH</h4><p>Send ETH to mint the same amount of rETH.</p></div>
+            <div class="never__item"><h4>Plain ERC-20</h4><p>Transfer rETH like any other token on the network.</p></div>
+            <div class="never__item"><h4>Exact backing</h4><p>Contract ETH and rETH supply move together.</p></div>
+            <div class="never__item"><h4>Redeem</h4><p>Burn rETH to request the matching amount of ETH.</p></div>
+            <div class="never__item"><h4>No mint fee</h4><p>The contract does not charge a mint fee.</p></div>
+            <div class="never__item"><h4>No admin mint</h4><p>New rETH only comes from ETH deposited through the contract.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 MINT rETH -->
+      <section class="sec" id="mint">
+        <div class="sec__head">
+          <span class="sec__num">03</span>
+          <h2 class="sec__title">Mint rETH that accrues value</h2>
+          <p class="sec__lede">Deposit ETH and receive rETH at the current exchange rate. As the protocol adds yield from staking and lending, each rETH becomes redeemable for more ETH. Withdraw to ETH at the live rate anytime. The rate is set purely by the ETH actually backing the token — variable, and never more than the vault holds.</p>
+        </div>
+
+        <div class="mint">
+          <div class="mint__panel">
+            <div class="mint__toggle" role="tablist" aria-label="Mint or withdraw">
+              <button class="mint__toggle-btn is-active" type="button" data-mode="mint" role="tab" aria-selected="true">Mint</button>
+              <button class="mint__toggle-btn" type="button" data-mode="redeem" role="tab" aria-selected="false">Withdraw</button>
+            </div>
+
+            <div class="mint__field">
+              <div class="mint__field-top">
+                <span class="mint__field-label" data-role="pay-label">You pay</span>
+                <span class="mint__field-bal">Balance: <b id="mint-balance">0.000</b> <button type="button" class="mint__max" id="mint-max">MAX</button></span>
+              </div>
+              <div class="mint__field-row">
+                <input class="mint__input" id="mint-amount" type="text" inputmode="decimal" placeholder="0.0" value="1.0" />
+                <span class="mint__asset" data-role="pay-asset">
+                  <span class="mint__asset-dot"></span>ETH
+                </span>
+              </div>
+            </div>
+
+            <div class="mint__arrow" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M9 15L4 10M9 15L14 10" stroke="#fff" stroke-opacity="0.7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+
+            <div class="mint__field">
+              <div class="mint__field-top">
+                <span class="mint__field-label" data-role="get-label">You receive</span>
+              </div>
+              <div class="mint__field-row">
+                <input class="mint__input" id="mint-output" type="text" readonly value="1.0" />
+                <span class="mint__asset mint__asset--r" data-role="get-asset">
+                  <span class="mint__asset-dot"></span>rETH
+                </span>
+              </div>
+            </div>
+
+            <button class="mint__submit" id="mint-submit" type="button">Connect wallet</button>
+            <p class="mint__hint" id="mint-hint">Connect a wallet to mint rETH.</p>
+          </div>
+
+          <div class="mint__side">
+            <div class="mint__stat"><span>Exchange rate</span><b id="rate-value">1 rETH = 1.0000 ETH</b></div>
+            <div class="mint__stat"><span>Your rETH value</span><b id="rate-position">—</b></div>
+            <div class="mint__stat"><span>Target yield</span><b>~8% APY · variable</b></div>
+            <div class="mint__stat"><span>Backing</span><b>100% ETH</b></div>
+            <div class="mint__stat"><span>Network</span><b>Robinhood Chain</b></div>
+          </div>
+        </div>
+
+        <div class="codewrap">
+          <div class="codewrap__bar">
+            <span class="codewrap__lang">RETHVault.sol · rate = totalAssets / totalSupply</span>
+            <button class="codewrap__copy" type="button" data-copy="#reth-src">Copy</button>
+          </div>
+          <pre class="codewrap__pre"><code id="reth-src">// The rate is derived purely from balances, so the vault can never owe
+// more ETH than it holds. Yield fed in via addYield() lifts every rETH.
+
+// ETH value of a given amount of rETH:
+function convertToAssets(uint256 shares) public view returns (uint256) {
+    return (shares * (totalAssets + 1)) / (totalSupply + 1e3);
+}
+
+// Deposit ETH, mint rETH at the current rate:
+function deposit() external payable returns (uint256 shares) {
+    shares = convertToShares(msg.value);   // assets and supply rise together
+    totalAssets += msg.value;
+    _mint(msg.sender, shares);             // depositors never dilute holders
+}
+
+// Withdraw anytime: burn rETH for its current ETH value:
+function redeem(uint256 shares) external returns (uint256 assets) {
+    assets = convertToAssets(shares);
+    require(assets <= totalAssets, "insufficient liquidity");
+    _burn(msg.sender, shares);
+    totalAssets -= assets;
+    (bool ok, ) = msg.sender.call{value: assets}("");
+    require(ok, "ETH transfer failed");
+}
+
+// Permissionless yield top-up — mints NO shares, so the rate rises
+// for everyone. This is where the protocol returns real staking /
+// lending yield. No privileged setter can move the rate directly.
+function addYield() external payable {
+    totalAssets += msg.value;
+}</code></pre>
+        </div>
+        <p class="sec__foot">The redemption rate is <em>rate = totalAssets / totalSupply</em>. Deposits and withdrawals move both together, so they never change the rate — only real yield added through addYield() does. Because redemption is always priced against the ETH actually held, the vault is always fully backed. The ~8% target is variable and comes from the protocol's staking and lending; it is not a guarantee.</p>
+      </section>
+
+      <!-- 04 STATUS -->
+      <section class="sec" id="status">
+        <div class="sec__head">
+          <span class="sec__num">04</span>
+          <h2 class="sec__title">Where this stands</h2>
+          <p class="sec__lede">The live contract is on Robinhood Chain. The product is intentionally simple: ETH enters, rETH is minted 1:1, and rETH can be redeemed back to ETH.</p>
+        </div>
+
+        <div class="status">
+          <div class="status__row"><div class="status__k">Network</div><div class="status__badge status__badge--live">Mainnet</div><div class="status__v">Robinhood Chain, chain ID 4663.</div></div>
+          <div class="status__row"><div class="status__k">Contract</div><div class="status__badge status__badge--warn">To Be Announced</div><div class="status__v">The rETH mint contract address will be published here and in the footer once it goes live.</div></div>
+          <div class="status__row"><div class="status__k">Rate</div><div class="status__badge status__badge--ok">Accruing</div><div class="status__v">rETH value = vault ETH / rETH supply. Starts at 1:1 and rises as yield is added.</div></div>
+          <div class="status__row"><div class="status__k">Target yield</div><div class="status__badge status__badge--ok">~8% · variable</div><div class="status__v">Generated by the protocol's staking and lending. Variable and not guaranteed.</div></div>
+          <div class="status__row"><div class="status__k">Withdrawals</div><div class="status__badge status__badge--ok">Always open</div><div class="status__v">Withdraw to ETH anytime at the live rate, subject to vault liquidity.</div></div>
+          <div class="status__row"><div class="status__k">Audit</div><div class="status__badge status__badge--warn">Pending</div><div class="status__v">The contract is not audited. Use small amounts and review the code before interacting.</div></div>
+        </div>
+
+        <p class="status__ask">Use the Open App button to connect a wallet and mint from the dedicated app page, or use the mint interface on this home page.</p>
+      </section>
+
+      <!-- 05 QUESTIONS -->
+      <section class="sec" id="questions">
+        <div class="sec__head">
+          <span class="sec__num">05</span>
+          <h2 class="sec__title">Questions</h2>
+          <p class="sec__lede">The ones integrators actually ask.</p>
+        </div>
+
+        <div class="faq">
+          <div class="faq__item">
+            <button class="faq__q" type="button" aria-expanded="false">What is rETH?<span class="faq__icon" aria-hidden="true"></span></button>
+            <div class="faq__a"><p>rETH is a plain ERC-20 you receive by depositing ETH into the Roxx vault. It starts at 1:1 with ETH, and its redemption value rises over time as the protocol adds yield to the vault.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" type="button" aria-expanded="false">How does the yield work?<span class="faq__icon" aria-hidden="true"></span></button>
+            <div class="faq__a"><p>The exchange rate is simply the vault's ETH balance divided by the rETH supply. The protocol stakes and lends the deposited ETH off-chain and returns the earnings to the vault, which lifts every rETH's redemption value. The target is around 8% APY, but it is variable and not guaranteed — it only reflects the ETH actually funded into the vault.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" type="button" aria-expanded="false">Can I withdraw rETH back to ETH?<span class="faq__icon" aria-hidden="true"></span></button>
+            <div class="faq__a"><p>Yes, withdrawals are always open. Burning rETH returns its current ETH value at the live rate, subject to the ETH liquidity available in the vault at that moment.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" type="button" aria-expanded="false">What wallets can I use?<span class="faq__icon" aria-hidden="true"></span></button>
+            <div class="faq__a"><p>The app uses EIP-6963 wallet discovery and can list compatible browser wallets such as MetaMask, Phantom EVM, Coinbase Wallet, Rabby, and others installed in your browser.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" type="button" aria-expanded="false">Where can I mint?<span class="faq__icon" aria-hidden="true"></span></button>
+            <div class="faq__a"><p>Use the mint panel on the home page or click Open app in the header to use the dedicated app page. Both surfaces use the same Robinhood Chain contract configuration.</p></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================== FOOTER =========================== -->
+    <footer class="foot">
+      <div class="foot__top">
+        <div class="foot__brandcol">
+          <span class="brand__name foot__brand">Roxx</span>
+          <p class="foot__blurb">An ETH-backed token on Robinhood Chain. Deposit ETH to mint rETH; its value accrues as the protocol adds staking and lending yield. Withdraw to ETH anytime at the live rate.</p>
+          <a class="foot__email" href="mailto:hello@roxx.fi">hello@roxx.fi</a>
+        </div>
+
+        <div class="foot__links">
+          <div class="foot__group">
+            <h4>Protocol</h4>
+            <a href="app.html">Open the app</a>
+            <a href="#argument">The argument</a>
+            <a href="#mechanic">Mechanic</a>
+            <a href="#mint">Mint rETH</a>
+          </div>
+          <div class="foot__group">
+            <h4>Links</h4>
+            <a href="#mint">Mint interface</a>
+            <a href="#status">Live status</a>
+            <a href="https://x.com/TryRoxxApp" target="_blank" rel="noopener">X / @TryRoxxApp</a>
+          </div>
+          <div class="foot__group">
+            <h4>rETH details</h4>
+            <p class="foot__detail"><span>Network</span><b>Robinhood Chain</b></p>
+            <p class="foot__detail"><span>Chain ID</span><b>4663</b></p>
+            <p class="foot__detail"><span>Symbol</span><b>rETH</b></p>
+            <p class="foot__detail"><span>Backing</span><b>1 ETH : 1 rETH</b></p>
+            <p class="foot__detail"><span>Contract</span><b class="foot__detail-muted">To Be Announced</b></p>
+          </div>
+        </div>
+      </div>
+      <div class="foot__bottom">
+        <span>© <span id="year"></span> Roxx Protocol</span>
+        <span class="foot__mono">[ ERC-20 ] · MAINNET</span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roxx App — Mint rETH</title>
+  <meta name="description" content="Mint and redeem rETH 1:1 with ETH on Robinhood Chain." />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@100,200,300,400,450,500,600,700,800,900&f[]=general-sans@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="app-body">
+  <header class="site-header app-header">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html" aria-label="Roxx home">
+        <img class="brand__mark" src="logo.png" alt="" aria-hidden="true" />
+        <span class="brand__name">Roxx</span>
+      </a>
+      <nav class="nav" aria-label="App navigation">
+        <a class="nav__link" href="index.html#argument">About</a>
+        <a class="nav__link" href="index.html#status">Status</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-social" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener" aria-label="Roxx on X (opens in new tab)" title="Roxx on X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.9h1.73L8.28 3.98H6.42L17.8 19.9Z"/></svg>
+        </a>
+        <a class="button button--ghost" href="index.html">Back home</a>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="menu-toggle__bar"></span><span class="menu-toggle__bar"></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <a class="mobile-menu__link" href="index.html#argument">About</a>
+      <a class="mobile-menu__link" href="index.html#status">Status</a>
+      <a class="mobile-menu__link" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener">X / @TryRoxxApp</a>
+      <a class="button button--ghost mobile-menu__action" href="index.html">Back home</a>
+    </div>
+  </header>
+
+  <main class="app-page" id="app">
+    <div class="app-page__grid" aria-hidden="true"></div>
+    <section class="app-shell" aria-labelledby="app-title">
+      <div class="app-shell__intro">
+        <div class="app-chip"><span class="app-chip__dot"></span> Robinhood Chain</div>
+        <h1 class="app-shell__title" id="app-title">Mint rETH</h1>
+        <p class="app-shell__lede">Deposit ETH to mint rETH. Its value accrues as the protocol adds yield, and you can withdraw to ETH at the current rate anytime.</p>
+      </div>
+
+      <div class="mint mint--app">
+        <div class="mint__panel">
+          <div class="mint__toggle" role="tablist" aria-label="Mint or withdraw">
+            <button class="mint__toggle-btn is-active" type="button" data-mode="mint" role="tab" aria-selected="true">Mint</button>
+            <button class="mint__toggle-btn" type="button" data-mode="redeem" role="tab" aria-selected="false">Withdraw</button>
+          </div>
+          <div class="mint__field">
+            <div class="mint__field-top"><span class="mint__field-label" data-role="pay-label">You pay</span><span class="mint__field-bal">Balance: <b id="mint-balance">0.000</b> <button type="button" class="mint__max" id="mint-max">MAX</button></span></div>
+            <div class="mint__field-row"><input class="mint__input" id="mint-amount" type="text" inputmode="decimal" placeholder="0.0" value="1.0" /><span class="mint__asset" data-role="pay-asset"><span class="mint__asset-dot"></span>ETH</span></div>
+          </div>
+          <div class="mint__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M9 15L4 10M9 15L14 10" stroke="#fff" stroke-opacity="0.7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="mint__field">
+            <div class="mint__field-top"><span class="mint__field-label" data-role="get-label">You receive</span></div>
+            <div class="mint__field-row"><input class="mint__input" id="mint-output" type="text" readonly value="1.0" /><span class="mint__asset mint__asset--r" data-role="get-asset"><span class="mint__asset-dot"></span>rETH</span></div>
+          </div>
+          <button class="mint__submit" id="mint-submit" type="button">Connect wallet</button>
+          <p class="mint__hint" id="mint-hint">Connect a wallet to mint rETH.</p>
+        </div>
+        <div class="mint__side">
+          <div class="mint__stat"><span>Exchange rate</span><b id="rate-value">1 rETH = 1.0000 ETH</b></div>
+          <div class="mint__stat"><span>Your rETH value</span><b id="rate-position">—</b></div>
+          <div class="mint__stat"><span>Target yield</span><b>~8% APY · variable</b></div>
+          <div class="mint__stat"><span>Backing</span><b>100% ETH</b></div>
+          <div class="mint__stat"><span>Network</span><b>Robinhood Chain</b></div>
+          <div class="mint__stat mint__stat--ca"><span>Contract</span><b>To Be Announced</b></div>
+        </div>
+        <p class="mint__disclaimer">Yield is generated by the protocol's staking and lending and returned to the vault. The rate reflects the ETH actually backing rETH — it is variable and not guaranteed.</p>
+      </div>
+
+      <!-- Operator: Add yield -->
+      <details class="yield-panel">
+        <summary class="yield-panel__summary">
+          <span>Add yield to the vault</span>
+          <span class="yield-panel__tag">Operator</span>
+        </summary>
+        <div class="yield-panel__body">
+          <p class="yield-panel__note">Send ETH earned by the protocol's staking and lending into the vault. This mints no rETH, so it raises the redemption value of every rETH holder. Anyone can top up; typically only the protocol does.</p>
+          <div class="yield-panel__row">
+            <input class="mint__input yield-panel__input" id="yield-amount" type="text" inputmode="decimal" placeholder="0.0" />
+            <span class="mint__asset"><span class="mint__asset-dot"></span>ETH</span>
+          </div>
+          <button class="mint__submit yield-panel__submit" id="yield-submit" type="button">Connect wallet</button>
+          <p class="mint__hint" id="yield-hint">Connect a wallet to add yield.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="foot app-footer">
+    <div class="foot__top">
+      <div class="foot__brandcol"><span class="brand__name foot__brand">Roxx</span><p class="foot__blurb">Mint rETH 1:1 with ETH on Robinhood Chain.</p><a class="foot__email" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener">@TryRoxxApp on X</a></div>
+      <div class="foot__links">
+        <div class="foot__group"><h4>App</h4><a href="index.html">Home</a><a href="app.html">Mint rETH</a><a href="index.html#status">Status</a></div>
+        <div class="foot__group"><h4>rETH details</h4><p class="foot__detail"><span>Network</span><b>Robinhood Chain</b></p><p class="foot__detail"><span>Chain ID</span><b>4663</b></p><p class="foot__detail"><span>Symbol</span><b>rETH</b></p></div>
+        <div class="foot__group"><h4>Contract</h4><p class="foot__detail"><span>CA</span><b class="foot__detail-muted">To Be Announced</b></p></div>
+      </div>
+    </div>
+    <div class="foot__bottom"><span>© <span id="year"></span> Roxx Protocol</span><span class="foot__mono">[ rETH ] · MAINNET</span></div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
