@@ -440,6 +440,7 @@
     var amountInput = document.getElementById('mint-amount');
     var outputInput = document.getElementById('mint-output');
     var submit = document.getElementById('mint-submit');
+    var disconnectBtn = document.getElementById('mint-disconnect');
     var hint = document.getElementById('mint-hint');
     var balEl = document.getElementById('mint-balance');
     var maxBtn = document.getElementById('mint-max');
@@ -645,12 +646,14 @@
 
       if (!account) {
         hint.textContent = isMint ? 'Connect a wallet to mint rETH.' : 'Connect a wallet to withdraw ETH.';
+        if (disconnectBtn) disconnectBtn.hidden = true;
       } else {
         var mx = maxAmount();
         var mxStr = mx != null ? fmt(mx) : '0.000';
         hint.textContent = isMint
           ? 'Connected ' + short(account) + ' · up to ' + mxStr + ' rETH mintable'
           : 'Connected ' + short(account) + ' · up to ' + mxStr + ' ETH withdrawable';
+        if (disconnectBtn) disconnectBtn.hidden = false;
       }
     }
 
@@ -736,6 +739,29 @@
           setSubmitLabel();
           hint.textContent = readableError(err);
         });
+    }
+
+    // Clear the local connection so the user can connect a different account.
+    // (A dApp cannot force the wallet extension to log out; this resets our
+    // state and re-prompts on the next connect so another account can be picked.)
+    function disconnect() {
+      account = null;
+      signer = null;
+      reth = null;
+      ethBal = null;
+      rethBal = null;
+      rateWei = null;
+      // Best-effort: ask the wallet to forget this site's permission so the
+      // account chooser shows again next time (supported by MetaMask/Rabby).
+      if (eip1193 && eip1193.request) {
+        eip1193.request({
+          method: 'wallet_revokePermissions',
+          params: [{ eth_accounts: {} }]
+        }).catch(function () { /* not all wallets support it; ignore */ });
+      }
+      eip1193 = null;
+      applyMode();
+      refreshRateUI();
     }
 
     // Entry point: decide whether to show a picker or connect directly.
@@ -912,6 +938,7 @@
     });
 
     submit.addEventListener('click', submitTx);
+    if (disconnectBtn) disconnectBtn.addEventListener('click', disconnect);
 
     /* ---------- operator: add yield ---------- */
     (function yieldPanel() {

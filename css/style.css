@@ -1375,6 +1375,16 @@ a { text-decoration: none; color: inherit; }
   transition: background .15s ease;
 }
 .mint__submit:hover { background: #fff; }
+.mint__disconnect {
+  width: 100%; margin-top: 8px;
+  height: 40px; border-radius: 10px; cursor: pointer;
+  font-family: var(--font-ui); font-weight: 450; font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent; border: 1px solid var(--hair);
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.mint__disconnect:hover { background: rgba(255, 255, 255, 0.06); color: #fff; border-color: rgba(255,255,255,.3); }
+.mint__disconnect[hidden] { display: none; }
 .mint__hint { font-size: 12px; color: rgba(255, 255, 255, 0.45); text-align: center; margin: 12px 0 0; }
 
 .mint__side {
