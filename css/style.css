@@ -1602,3 +1602,322 @@ a { text-decoration: none; color: inherit; }
 }
 
 .foot__contract-address { display: block; max-width: 24ch; overflow-wrap: anywhere; text-align: right; font-family: var(--mono); font-size: 10px; line-height: 1.35; color: rgba(255,255,255,.82); }
+
+/* ============================================================
+   CINEMATIC REDESIGN (Instrument Serif hero theme)
+   Layered on top; reuses existing wallet/mint tech + IDs.
+   ============================================================ */
+:root {
+  --c-background: 150 20% 5%;      /* deep dark green-black */
+  --c-foreground: 45 30% 90%;      /* warm off-white */
+  --c-accent: 45 70% 75%;          /* warm amber/gold */
+  --c-accent-foreground: 150 20% 5%;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+}
+
+.cine {
+  font-family: var(--font-serif);
+  background: hsl(var(--c-background));
+  color: hsl(var(--c-foreground));
+  min-height: 100svh;
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
+}
+.cine * { box-sizing: border-box; }
+
+/* Full-screen background video */
+.cine__video {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+.cine__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, hsl(var(--c-background) / 0.55) 0%, hsl(var(--c-background) / 0.25) 40%, hsl(var(--c-background) / 0.75) 100%);
+}
+
+.cine__wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+/* ---------- Navbar ---------- */
+.cine-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px 32px;
+}
+@media (min-width: 768px) { .cine-nav { padding: 24px 64px; } }
+.cine-nav__logo { width: 40px; height: 40px; flex-shrink: 0; color: hsl(var(--c-foreground)); }
+.cine-nav__logo svg { display: block; width: 40px; height: 40px; }
+.cine-nav__links { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.cine-nav__link {
+  color: hsl(var(--c-foreground));
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: opacity .18s ease;
+}
+.cine-nav__link:hover { opacity: 0.8; }
+
+/* ---------- Main hero area ---------- */
+.cine-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 32px 40px;
+}
+@media (min-width: 768px) { .cine-main { padding: 0 64px 40px; } }
+
+.cine-hero {
+  margin-top: auto;
+  margin-bottom: auto;
+  max-width: 48rem;
+  overflow: visible;
+}
+.cine-hero__heading {
+  font-size: 3.75rem;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: hsl(var(--c-foreground));
+  margin: 0 0 48px;
+  font-weight: 400;
+  overflow: visible;
+}
+@media (min-width: 768px) { .cine-hero__heading { font-size: 6rem; } }
+@media (min-width: 1024px) { .cine-hero__heading { font-size: 7rem; } }
+
+/* Neon glow on the last word */
+.cine-glow {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+  color: hsl(var(--c-foreground));
+}
+.cine-glow__layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: hsl(0 0% 100%);
+  -webkit-mask-image: linear-gradient(to bottom left, #fff 22%, transparent 52%);
+  mask-image: linear-gradient(to bottom left, #fff 22%, transparent 52%);
+  pointer-events: none;
+}
+.cine-glow__layer--1 { filter: blur(4px); }
+.cine-glow__layer--2 { filter: blur(12px); opacity: 0.6; }
+
+/* ---------- CTA glow button ---------- */
+.cine-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 43px;
+  background: hsl(var(--c-accent));
+  color: hsl(var(--c-accent-foreground));
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0px 4px 95px 4px hsl(45 70% 50% / 0.6);
+  transition: transform .18s ease;
+}
+.cine-cta:hover { transform: scale(1.05); }
+.cine-cta__blob {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: hsl(45 60% 95%);
+  filter: blur(16px);
+  pointer-events: none;
+}
+.cine-cta__text { position: relative; z-index: 1; }
+
+/* ---------- Trusted-by marquee ---------- */
+.cine-marquee-wrap {
+  margin-top: auto;
+  width: 100%;
+}
+@media (min-width: 768px) { .cine-marquee-wrap { width: 50%; } }
+.cine-marquee__label {
+  color: hsl(var(--c-foreground) / 0.5);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.cine-marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.cine-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: cine-marquee 20s linear infinite;
+}
+.cine-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 24px;
+}
+.cine-logo svg { width: 24px; height: 24px; color: hsl(var(--c-foreground) / 0.6); stroke: currentColor; }
+.cine-logo__name {
+  color: hsl(var(--c-foreground) / 0.6);
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@keyframes cine-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ---------- $ROXX CA chip (cinematic) ---------- */
+.cine-ca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--c-foreground) / 0.18);
+  background: hsl(var(--c-background) / 0.4);
+  flex-wrap: wrap;
+}
+.cine-ca__label { color: hsl(var(--c-accent)); font-size: 0.85rem; letter-spacing: .06em; }
+.cine-ca__addr { font-family: var(--mono); font-size: 0.8rem; color: hsl(var(--c-foreground) / 0.85); word-break: break-all; }
+.cine-ca__btn {
+  font-family: var(--font-serif); font-size: 0.85rem;
+  color: hsl(var(--c-foreground) / 0.7); background: transparent;
+  border: 1px solid hsl(var(--c-foreground) / 0.18); border-radius: 8px;
+  padding: 3px 10px; cursor: pointer; text-decoration: none; transition: opacity .15s ease;
+}
+.cine-ca__btn:hover { opacity: 0.75; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cine-marquee__track { animation: none; }
+}
+
+/* ============================================================
+   CINEMATIC APP PAGE (restyle mint panel over video theme)
+   Element IDs and .mint__* hooks unchanged — JS untouched.
+   ============================================================ */
+.cine .site-header { position: relative; z-index: 10; background: transparent; }
+.cine .brand__name { font-family: var(--font-serif); color: hsl(var(--c-foreground)); }
+.cine .nav__link { font-family: var(--font-serif); color: hsl(var(--c-foreground)); }
+.cine .nav__link:hover { color: hsl(var(--c-foreground)); opacity: 0.8; }
+.cine .header-social { border-color: hsl(var(--c-foreground) / 0.2); color: hsl(var(--c-foreground)); }
+.cine .button--ghost { color: hsl(var(--c-foreground)); font-family: var(--font-serif); }
+.cine .button--ghost:hover { background: hsl(var(--c-foreground) / 0.08); }
+
+.cine .app-page {
+  position: relative;
+  z-index: 10;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(110px, 15svh, 170px) 24px clamp(48px, 8svh, 88px);
+}
+@media (min-width: 768px) { .cine .app-page { padding-left: 64px; padding-right: 64px; } }
+.cine .app-page__grid { display: none; }
+
+.cine .app-shell { width: min(100%, 900px); }
+.cine .app-shell__intro { text-align: center; margin-bottom: clamp(28px, 4vh, 44px); }
+.cine .app-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 16px; border-radius: 999px;
+  border: 1px solid hsl(var(--c-foreground) / 0.18);
+  background: hsl(var(--c-background) / 0.4);
+  font-family: var(--font-serif); font-size: 1rem; letter-spacing: .03em;
+  color: hsl(var(--c-foreground) / 0.75);
+}
+.cine .app-chip__dot { width: 7px; height: 7px; border-radius: 50%; background: hsl(var(--c-accent)); box-shadow: 0 0 0 4px hsl(var(--c-accent) / 0.18); }
+.cine .app-shell__title {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: clamp(48px, 8vw, 84px); line-height: 1; letter-spacing: -0.02em;
+  color: hsl(var(--c-foreground)); margin: 18px 0 0;
+}
+.cine .app-shell__lede {
+  font-family: var(--font-serif);
+  max-width: 46ch; margin: 14px auto 0;
+  font-size: clamp(17px, 2vw, 20px); line-height: 1.45;
+  color: hsl(var(--c-foreground) / 0.7);
+}
+
+/* Panel + side, retinted for the theme */
+.cine .mint--app { grid-template-columns: minmax(0, 1.15fr) minmax(240px, .85fr); max-width: 820px; margin: 0 auto; }
+.cine .mint__panel,
+.cine .mint__side,
+.cine .yield-panel {
+  background: hsl(var(--c-background) / 0.55);
+  border-color: hsl(var(--c-foreground) / 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.cine .mint__panel-title,
+.cine .mint__field-label,
+.cine .mint__stat span,
+.cine .mint__field-bal { color: hsl(var(--c-foreground) / 0.7); }
+.cine .mint__input,
+.cine .mint__stat b,
+.cine .mint__asset,
+.cine .yield-panel__summary { color: hsl(var(--c-foreground)); }
+.cine .mint__toggle { background: hsl(var(--c-background) / 0.5); }
+.cine .mint__toggle-btn { color: hsl(var(--c-foreground) / 0.6); font-family: var(--font-serif); }
+.cine .mint__toggle-btn.is-active { color: hsl(var(--c-accent-foreground)); background: hsl(var(--c-accent)); }
+.cine .mint__field { background: hsl(var(--c-background) / 0.45); border-color: hsl(var(--c-foreground) / 0.12); }
+.cine .mint__asset { background: hsl(var(--c-foreground) / 0.05); border-color: hsl(var(--c-foreground) / 0.16); }
+.cine .mint__max { color: hsl(var(--c-accent)); background: hsl(var(--c-accent) / 0.12); border-color: hsl(var(--c-accent) / 0.3); }
+.cine .mint__arrow { background: hsl(var(--c-background)); border-color: hsl(var(--c-foreground) / 0.16); }
+
+/* Submit button = the amber glow CTA look */
+.cine .mint__submit {
+  background: hsl(var(--c-accent));
+  color: hsl(var(--c-accent-foreground));
+  font-family: var(--font-serif);
+  box-shadow: 0px 4px 60px 2px hsl(45 70% 50% / 0.4);
+}
+.cine .mint__submit:hover { background: hsl(45 75% 82%); }
+.cine .mint__disconnect { color: hsl(var(--c-foreground) / 0.7); border-color: hsl(var(--c-foreground) / 0.18); font-family: var(--font-serif); }
+.cine .mint__hint,
+.cine .mint__disclaimer { color: hsl(var(--c-foreground) / 0.5); }
+.cine .yield-panel__tag { color: hsl(var(--c-accent)); border-color: hsl(var(--c-accent) / 0.3); }
+.cine .mint__stat--ca a { color: hsl(var(--c-accent)) !important; }
+
+/* Footer retint */
+.cine .foot,
+.cine .app-footer { position: relative; z-index: 10; background: hsl(var(--c-background) / 0.85); border-color: hsl(var(--c-foreground) / 0.12); }
+.cine .foot__brand { font-family: var(--font-serif); color: hsl(var(--c-foreground)); }
+.cine .foot__blurb,
+.cine .foot__detail span,
+.cine .foot__group a { color: hsl(var(--c-foreground) / 0.6); }
+.cine .foot__group h4 { color: hsl(var(--c-foreground) / 0.45); }
+.cine .foot__detail b,
+.cine .foot__group a:hover { color: hsl(var(--c-foreground)); }
+.cine .foot__email { color: hsl(var(--c-accent)); }
+.cine .foot__mono,
+.cine .foot__bottom { color: hsl(var(--c-foreground) / 0.4); }
