@@ -1,4 +1,4 @@
-# Roxx
+# Reticence
 
 A single-page site for **rETH** on Robinhood Chain (chain ID 4663).
 
@@ -8,10 +8,10 @@ A single-page site for **rETH** on Robinhood Chain (chain ID 4663).
 
 ## Structure
 
-- `index.html` — landing page + mint/withdraw panel
+- `index.html` — scroll-film landing (self-contained: scroll-scrubbed video, four panels, pixel-dithered reveal of the rETH details). Links to the app; loads `js/script.js` for the footer year and shared helpers. The hero token chip reads "To Be Announced" until the $RETICENCE token launches.
 - `app.html` — dedicated mint/withdraw app page (+ operator "Add yield")
-- `css/style.css` — styles
-- `js/script.js` — camera/scroll UI + wallet/mint logic
+- `css/style.css` — styles for the app page (the `.sky` block at the end is the theme that matches the landing)
+- `js/script.js` — wallet/mint logic (+ legacy scroll UI, inert on the current pages)
 - `js/config.js` — chain params + contract address + ABI
 - `contracts/RETHVault.sol` — the accruing ETH-backed vault contract
 - `contracts/RETH.sol` — earlier flat 1:1 version (reference)

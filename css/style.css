@@ -1412,6 +1412,7 @@ a { text-decoration: none; color: inherit; }
    WALLET PICKER MODAL
    ============================================================ */
 .wallet-modal {
+  --wm-ease: cubic-bezier(.22, .61, .36, 1);
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -1420,11 +1421,17 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   padding: 20px;
   background: rgba(5, 6, 15, 0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  animation: wallet-fade .15s ease-out both;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: wallet-fade .5s var(--wm-ease) both;
+  will-change: opacity;
 }
 @keyframes wallet-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wallet-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes wallet-pop-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(10px) scale(.985); } }
+.wallet-modal.is-closing { animation: wallet-fade-out .34s var(--wm-ease) both; pointer-events: none; }
+.wallet-modal.is-closing .wallet-modal__box { animation: wallet-pop-out .3s var(--wm-ease) both; }
+.wallet-modal.is-closing .wallet-modal__item { animation: none; }
 
 .wallet-modal__box {
   width: 100%;
@@ -1434,9 +1441,11 @@ a { text-decoration: none; color: inherit; }
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
-  animation: wallet-pop .18s ease-out both;
+  animation: wallet-pop .6s var(--wm-ease) both;
+  will-change: transform, opacity;
 }
-@keyframes wallet-pop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes wallet-pop { from { opacity: 0; transform: translateY(22px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes wallet-item { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 .wallet-modal__title {
   font-family: var(--font-display);
@@ -1461,10 +1470,18 @@ a { text-decoration: none; color: inherit; }
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
-  transition: background .15s ease, border-color .15s ease;
+  transition: background .35s var(--wm-ease), border-color .35s var(--wm-ease), transform .35s var(--wm-ease);
   text-align: left;
+  animation: wallet-item .55s var(--wm-ease) both;
 }
-.wallet-modal__item:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.28); }
+.wallet-modal__item:nth-child(2) { animation-delay: .08s; }
+.wallet-modal__item:nth-child(3) { animation-delay: .14s; }
+.wallet-modal__item:nth-child(4) { animation-delay: .20s; }
+.wallet-modal__item:nth-child(5) { animation-delay: .26s; }
+.wallet-modal__item:nth-child(n+6) { animation-delay: .32s; }
+.wallet-modal__item:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.28); transform: translateY(-1px); }
+.wallet-modal__item:active { transform: scale(.99); }
+.wallet-modal__item:focus-visible { outline: 1px solid rgba(255, 255, 255, .6); outline-offset: 2px; }
 
 .wallet-modal__icon {
   width: 26px;
@@ -1489,9 +1506,14 @@ a { text-decoration: none; color: inherit; }
   font-family: var(--font-ui);
   font-size: 14px;
   cursor: pointer;
-  transition: color .15s ease;
+  transition: color .35s var(--wm-ease);
+  animation: wallet-item .55s var(--wm-ease) .3s both;
 }
 .wallet-modal__cancel:hover { color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .wallet-modal, .wallet-modal__box, .wallet-modal__item, .wallet-modal__cancel,
+  .wallet-modal.is-closing, .wallet-modal.is-closing .wallet-modal__box { animation: none; }
+}
 
 /* ============================================================
    HEADER SOCIAL + CONTRACT DETAILS
@@ -1921,3 +1943,257 @@ a { text-decoration: none; color: inherit; }
 .cine .foot__email { color: hsl(var(--c-accent)); }
 .cine .foot__mono,
 .cine .foot__bottom { color: hsl(var(--c-foreground) / 0.4); }
+
+/* ============================================================
+   SKY THEME — matches the scroll-film landing (index.html)
+   Layered on top of the app page; element IDs, .mint__* hooks
+   and the wallet JS are untouched.
+   ============================================================ */
+:root {
+  --sky-line:  rgba(255, 255, 255, 0.24);
+  --sky-black: #080a0d;
+  --sky-blue:  #5b8fd6;
+  --sky-pad:   clamp(20px, 3.6vw, 56px);
+  --sky-bar:   clamp(52px, 5.3vw, 108px);
+  --sky-ease:  cubic-bezier(.22, .61, .36, 1);
+  --font-ramillas: 'TT Ramillas Regular', Georgia, 'Times New Roman', serif;
+  --font-inter:    Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sky {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  background: var(--sky-blue);
+  color: #fff;
+  min-height: 100svh;
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.sky * { box-sizing: border-box; }
+.sky ::selection { background: #fff; color: #08203f; }
+
+/* Backdrop: the same chrome-cloud sky the landing ends on */
+.sky__bg {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  background: linear-gradient(180deg, #3f66aa, #7fa9d8);
+}
+.sky__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; display: block; }
+.sky__grain {
+  position: fixed; inset: -120%; z-index: 1; opacity: .16; pointer-events: none; mix-blend-mode: overlay;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  animation: sky-grain 1.1s steps(3) infinite;
+}
+@keyframes sky-grain {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-2%, 1%); }
+  66% { transform: translate(1%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------- Header: hairline bar, mono links, black CTA ---------- */
+.sky .site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  background: transparent;
+  padding-top: env(safe-area-inset-top);
+}
+.sky .site-header::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--sky-line);
+}
+.sky .site-header__inner {
+  height: var(--sky-bar);
+  padding-left: var(--sky-pad);
+  padding-right: var(--sky-pad);
+}
+.sky .brand { margin: 0; gap: 12px; color: #fff; }
+.sky .brand__mark { width: 30px; height: 30px; display: block; object-fit: contain; filter: drop-shadow(0 2px 10px rgba(6, 16, 36, .25)); }
+.sky .brand__name {
+  font-family: var(--font-ramillas); font-weight: 400;
+  font-size: 24px; letter-spacing: -.02em; color: #fff;
+}
+.sky .nav {
+  position: static; transform: none; height: auto; min-width: 0; padding: 0;
+  gap: clamp(16px, 2vw, 30px); border-radius: 0; background: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.sky .nav__link {
+  font-family: var(--mono); font-weight: 400; font-size: 9.5px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .85); transition: color .35s var(--sky-ease);
+}
+.sky .nav__link:hover { color: #fff; }
+.sky .header-actions {
+  height: auto; padding: 0; gap: 12px; border-radius: 0; background: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.sky .header-social {
+  width: 30px; height: 30px; border-radius: 2px;
+  border-color: rgba(255, 255, 255, .34); color: #fff;
+  transition: background .35s var(--sky-ease), color .35s var(--sky-ease), border-color .35s var(--sky-ease);
+}
+.sky .header-social:hover { background: #fff; color: var(--sky-black); border-color: #fff; }
+.sky .header-social svg { width: 13px; height: 13px; }
+.sky .button {
+  height: 30px; padding: 0 12px; border-radius: 3px;
+  font-family: var(--mono); font-weight: 400; font-size: 9.5px;
+  letter-spacing: .2em; text-transform: uppercase;
+  transition: background .35s var(--sky-ease), color .35s var(--sky-ease), transform .35s var(--sky-ease);
+}
+.sky .button--ghost { min-width: 0; background: var(--sky-black); color: #fff; }
+.sky .button--ghost:hover { background: #fff; color: var(--sky-black); transform: translateY(-1px); }
+.sky .menu-toggle { background: transparent; border: 1px solid var(--sky-line); border-radius: 2px; }
+.sky .mobile-menu:not([hidden]) {
+  background: rgba(8, 10, 13, .72); border: 1px solid var(--sky-line); border-radius: 4px;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.sky .mobile-menu__link {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .85); border-radius: 2px;
+}
+.sky .mobile-menu__link:hover { color: #fff; background: rgba(255, 255, 255, .08); }
+.sky .mobile-menu__action { height: 44px; }
+
+/* ---------- App page ---------- */
+.sky .app-page {
+  position: relative; z-index: 10;
+  flex: 1 0 auto; display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--sky-bar) + clamp(28px, 6svh, 64px)) var(--sky-pad) clamp(48px, 8svh, 88px);
+}
+.sky .app-page__grid { display: none; }
+.sky .app-shell { width: min(100%, 900px); }
+.sky .app-shell__intro { text-align: left; margin-bottom: clamp(28px, 4vh, 44px); }
+.sky .app-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: 2px; border: 0;
+  background: rgba(255, 255, 255, .16);
+  font-family: var(--mono); font-weight: 400; font-size: 8.5px; line-height: 1;
+  letter-spacing: .22em; text-transform: uppercase; color: rgba(255, 255, 255, .9);
+}
+.sky .app-chip__dot { width: 5px; height: 5px; border-radius: 0; background: #fff; box-shadow: none; }
+.sky .app-shell__title {
+  font-family: var(--font-ramillas); font-weight: 400;
+  font-size: clamp(42px, 4.3vw, 96px); line-height: 1; letter-spacing: -.022em;
+  color: #fff; margin: 18px 0 0;
+  text-shadow: 0 2px 40px rgba(6, 16, 36, .28);
+}
+.sky .app-shell__lede {
+  font-family: var(--font-inter); font-weight: 300;
+  max-width: 46ch; margin: 14px 0 0;
+  font-size: clamp(14px, 1.06vw, 16px); line-height: 1.62; color: rgba(255, 255, 255, .85);
+}
+
+/* Panel + side, hairlines over frosted sky */
+.sky .mint--app { grid-template-columns: minmax(0, 1.15fr) minmax(240px, .85fr); max-width: 900px; margin: 0; }
+.sky .mint__panel, .sky .mint__side, .sky .yield-panel { min-width: 0; }
+.sky .mint__panel,
+.sky .mint__side,
+.sky .yield-panel {
+  background: rgba(8, 10, 13, .30);
+  border: 1px solid var(--sky-line);
+  border-radius: 4px;
+  box-shadow: none;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.sky .mint__field-label,
+.sky .mint__stat span {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .62);
+}
+.sky .mint__field-bal { color: rgba(255, 255, 255, .6); }
+.sky .mint__field-bal b { color: #fff; }
+.sky .mint__input,
+.sky .mint__stat b,
+.sky .mint__asset,
+.sky .yield-panel__summary { color: #fff; }
+.sky .mint__input:read-only { color: rgba(255, 255, 255, .8); }
+.sky .mint__toggle { background: rgba(8, 10, 13, .35); border-radius: 3px; }
+.sky .mint__toggle-btn {
+  font-family: var(--mono); font-weight: 400; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .6); border-radius: 2px;
+}
+.sky .mint__toggle-btn:hover { color: #fff; }
+.sky .mint__toggle-btn.is-active { color: var(--sky-black); background: #fff; }
+.sky .mint__field { background: rgba(8, 10, 13, .28); border-color: rgba(255, 255, 255, .14); border-radius: 3px; }
+.sky .mint__asset {
+  background: rgba(255, 255, 255, .06); border-color: var(--sky-line); border-radius: 2px;
+  font-family: var(--mono); font-weight: 400; font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase;
+}
+.sky .mint__asset-dot { background: rgba(255, 255, 255, .7); border-radius: 0; width: 6px; height: 6px; }
+.sky .mint__asset--r .mint__asset-dot { background: #fff; }
+.sky .mint__max {
+  font-family: var(--mono); font-weight: 400; letter-spacing: .16em;
+  color: #fff; background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .3); border-radius: 2px;
+}
+.sky .mint__max:hover { background: #fff; color: var(--sky-black); }
+.sky .mint__arrow { background: var(--sky-black); border-color: var(--sky-line); }
+
+/* Submit = the black mono CTA from the landing */
+.sky .mint__submit {
+  height: 46px; border-radius: 3px;
+  font-family: var(--mono); font-weight: 400; font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  background: var(--sky-black); color: #fff; box-shadow: none;
+  transition: background .35s var(--sky-ease), color .35s var(--sky-ease), transform .35s var(--sky-ease);
+}
+.sky .mint__submit:hover { background: #fff; color: var(--sky-black); transform: translateY(-1px); }
+.sky .mint__disconnect {
+  height: 38px; border-radius: 3px;
+  font-family: var(--mono); font-weight: 400; font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .8); border-color: var(--sky-line);
+}
+.sky .mint__disconnect:hover { background: #fff; color: var(--sky-black); border-color: #fff; }
+.sky .mint__hint,
+.sky .mint__disclaimer { color: rgba(255, 255, 255, .62); }
+.sky .mint__stat { border-bottom-color: rgba(255, 255, 255, .14); }
+.sky .mint__stat b { font-size: 12px; }
+.sky .mint__stat--ca a { color: #fff !important; }
+.sky .yield-panel__summary { font-family: var(--font-inter); font-weight: 500; font-size: 14px; }
+.sky .yield-panel__summary:hover { background: rgba(255, 255, 255, .04); }
+.sky .yield-panel__tag { color: #fff; border-color: var(--sky-line); border-radius: 2px; letter-spacing: .18em; }
+.sky .yield-panel__note { color: rgba(255, 255, 255, .62); }
+.sky .yield-panel__row { background: rgba(8, 10, 13, .28); border-color: rgba(255, 255, 255, .14); border-radius: 3px; }
+
+/* Wallet picker (appended to body by the wallet JS) */
+.sky .wallet-modal { background: rgba(8, 20, 40, .6); }
+.sky .wallet-modal__box { background: #0f1a2e; border-color: var(--sky-line); border-radius: 4px; }
+.sky .wallet-modal__title { font-family: var(--font-ramillas); letter-spacing: -.02em; }
+.sky .wallet-modal__item { background: rgba(255, 255, 255, .06); border-color: var(--sky-line); border-radius: 3px; font-family: var(--font-inter); }
+.sky .wallet-modal__item:hover { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .4); }
+.sky .wallet-modal__icon { border-radius: 2px; }
+.sky .wallet-modal__icon--dot { background: linear-gradient(135deg, #3f66aa, #7fa9d8); }
+.sky .wallet-modal__cancel { font-family: var(--mono); font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; }
+
+/* Footer */
+.sky .foot,
+.sky .app-footer {
+  position: relative; z-index: 10;
+  background: rgba(8, 10, 13, .55);
+  border-top: 1px solid var(--sky-line);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.sky .foot__brand { font-family: var(--font-ramillas); color: #fff; }
+.sky .foot__blurb { color: rgba(255, 255, 255, .72); }
+.sky .foot__email { color: #fff; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.sky .foot__email:hover { opacity: .8; }
+.sky .foot__group h4 { color: rgba(255, 255, 255, .55); }
+.sky .foot__group a { color: rgba(255, 255, 255, .72); }
+.sky .foot__group a:hover { color: #fff; }
+.sky .foot__detail { color: rgba(255, 255, 255, .55); }
+.sky .foot__detail b { color: #fff; }
+.sky .foot__contract-address { color: #fff; }
+.sky .foot__bottom { border-top-color: rgba(255, 255, 255, .14); color: rgba(255, 255, 255, .5); }
+
+@media (max-width: 900px) {
+  .sky .site-header { top: 0; }
+  :root { --sky-bar: 56px; }
+  .sky .app-shell__title { font-size: clamp(34px, 7vw, 60px); }
+  .sky .mint--app { grid-template-columns: minmax(0, 1fr); max-width: 480px; }
+}
+@media (max-width: 600px) {
+  :root { --sky-pad: clamp(16px, 4.8vw, 24px); }
+  .sky .app-shell__title { font-size: clamp(30px, 11vw, 48px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sky__grain { display: none; }
+}

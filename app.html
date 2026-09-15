@@ -2,34 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Roxx App — Mint rETH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Reticence App — Mint rETH</title>
   <meta name="description" content="Mint and redeem rETH 1:1 with ETH on Robinhood Chain." />
   <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://db.onlinewebfonts.com/c/157aa88d85ea328fb5d533dfa569333b?family=TT+Ramillas+Regular" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <script>document.documentElement.classList.add('js');</script>
 </head>
-<body class="app-body cine">
-  <video class="cine__video" autoplay muted loop playsinline aria-hidden="true"
-         src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_094440_a3592600-bd1e-49e5-9bce-a73662061d83.mp4"></video>
-  <div class="cine__scrim" aria-hidden="true"></div>
+<body class="app-body sky">
+  <div class="sky__bg" aria-hidden="true">
+    <img src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260911_080319_f920a7fa-2033-49f5-8106-535c7a58419d.png&amp;w=1920&amp;q=85" alt="" decoding="async" />
+  </div>
+  <div class="sky__grain" aria-hidden="true"></div>
 
   <header class="site-header app-header">
     <div class="site-header__inner">
-      <a class="brand" href="index.html" aria-label="Roxx home">
-        <img class="brand__mark" src="logo.png" alt="" aria-hidden="true" />
-        <span class="brand__name">Roxx</span>
+      <a class="brand" href="index.html" aria-label="Reticence home">
+        <img class="brand__mark" src="logo.png" alt="" aria-hidden="true" decoding="async" />
+        <span class="brand__name">Reticence</span>
       </a>
       <nav class="nav" aria-label="App navigation">
         <a class="nav__link" href="index.html#argument">About</a>
         <a class="nav__link" href="index.html#status">Status</a>
       </nav>
       <div class="header-actions">
-        <a class="header-social" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener" aria-label="Roxx on X (opens in new tab)" title="Roxx on X">
+        <a class="header-social" href="https://x.com/TryReticence" target="_blank" rel="noopener" aria-label="Reticence on X (opens in new tab)" title="Reticence on X">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.9h1.73L8.28 3.98H6.42L17.8 19.9Z"/></svg>
         </a>
         <a class="button button--ghost" href="index.html">Back home</a>
@@ -41,7 +43,7 @@
     <div class="mobile-menu" id="mobile-menu" hidden>
       <a class="mobile-menu__link" href="index.html#argument">About</a>
       <a class="mobile-menu__link" href="index.html#status">Status</a>
-      <a class="mobile-menu__link" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener">X / @TryRoxxApp</a>
+      <a class="mobile-menu__link" href="https://x.com/TryReticence" target="_blank" rel="noopener">X / @TryReticence</a>
       <a class="button button--ghost mobile-menu__action" href="index.html">Back home</a>
     </div>
   </header>
@@ -106,14 +108,14 @@
 
   <footer class="foot app-footer">
     <div class="foot__top">
-      <div class="foot__brandcol"><span class="brand__name foot__brand">Roxx</span><p class="foot__blurb">Mint rETH 1:1 with ETH on Robinhood Chain.</p><a class="foot__email" href="https://x.com/TryRoxxApp" target="_blank" rel="noopener">@TryRoxxApp on X</a></div>
+      <div class="foot__brandcol"><span class="brand__name foot__brand">Reticence</span><p class="foot__blurb">Mint rETH 1:1 with ETH on Robinhood Chain.</p><a class="foot__email" href="https://x.com/TryReticence" target="_blank" rel="noopener">@TryReticence on X</a></div>
       <div class="foot__links">
         <div class="foot__group"><h4>App</h4><a href="index.html">Home</a><a href="app.html">Mint rETH</a><a href="index.html#status">Status</a></div>
         <div class="foot__group"><h4>rETH details</h4><p class="foot__detail"><span>Network</span><b>Robinhood Chain</b></p><p class="foot__detail"><span>Chain ID</span><b>4663</b></p><p class="foot__detail"><span>Symbol</span><b>rETH</b></p></div>
         <div class="foot__group"><h4>Contract</h4><p class="foot__detail"><span>CA</span><code class="foot__contract-address">0x7D2c73f3791268e45c957b75D6aBFde707FA6000</code></p><a href="https://robinhoodchain.blockscout.com/address/0x7D2c73f3791268e45c957b75D6aBFde707FA6000" target="_blank" rel="noopener">View on Blockscout</a></div>
       </div>
     </div>
-    <div class="foot__bottom"><span>© <span id="year"></span> Roxx Protocol</span><span class="foot__mono">[ rETH ] · MAINNET</span></div>
+    <div class="foot__bottom"><span>© <span id="year"></span> Reticence Protocol</span><span class="foot__mono">[ rETH ] · MAINNET</span></div>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>

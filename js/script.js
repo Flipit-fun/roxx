@@ -794,10 +794,21 @@
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'wallet-modal__item';
-        var icon = w.info.icon
-          ? '<img src="' + w.info.icon + '" alt="" class="wallet-modal__icon" />'
-          : '<span class="wallet-modal__icon wallet-modal__icon--dot"></span>';
-        btn.innerHTML = icon + '<span>' + w.info.name + '</span>';
+        // Build with DOM calls: wallet-supplied icon URLs / names are not trusted markup.
+        var icon;
+        if (w.info.icon) {
+          icon = document.createElement('img');
+          icon.src = w.info.icon;
+          icon.alt = '';
+          icon.className = 'wallet-modal__icon';
+        } else {
+          icon = document.createElement('span');
+          icon.className = 'wallet-modal__icon wallet-modal__icon--dot';
+        }
+        var label = document.createElement('span');
+        label.textContent = w.info.name;
+        btn.appendChild(icon);
+        btn.appendChild(label);
         btn.addEventListener('click', function () {
           close();
           connectWith(w.provider);
@@ -815,9 +826,24 @@
       overlay.appendChild(box);
       document.body.appendChild(overlay);
 
+      var closing = false;
       function close() {
+        if (closing) return;
+        closing = true;
         document.removeEventListener('keydown', onKey);
-        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        var remove = function () {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        };
+        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced) { remove(); return; }
+        // Play the exit animation (see .wallet-modal.is-closing), then remove.
+        var timer = setTimeout(remove, 480);
+        overlay.addEventListener('animationend', function (e) {
+          if (e.target !== overlay) return;
+          clearTimeout(timer);
+          remove();
+        });
+        overlay.classList.add('is-closing');
       }
       function onKey(e) { if (e.key === 'Escape') close(); }
       overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
