@@ -1,16 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-/// @title RETHVault — an ETH-backed, value-accruing rETH token
-/// @notice Deposit ETH, mint rETH at the current exchange rate. The rate is
+/// @title RUSDCVault — a USDC-backed, value-accruing rUSDC token on Arc
+/// @dev    Arc (Circle's L1) uses USDC as the NATIVE gas token with 18 decimals
+///         at the EVM level, so `msg.value` and balances here are USDC scaled
+///         by 1e18 — exactly the wei model. No ERC-20 approve step is needed:
+///         users send USDC as value to deposit(), and redeem() pays USDC back
+///         as native value.
+/// @notice Deposit USDC, mint rUSDC at the current exchange rate. The rate is
 ///         derived purely from balances: rate = totalAssets / totalSupply.
-///         When yield ETH is added via addYield(), the value of every rETH
-///         rises. When you withdraw, you burn rETH and receive
-///         rETH * (totalAssets / totalSupply) in ETH.
+///         When yield USDC is added via addYield(), the value of every rUSDC
+///         rises. When you withdraw, you burn rUSDC and receive
+///         rUSDC * (totalAssets / totalSupply) in USDC.
 ///
 ///         Key safety properties:
-///         - The contract can NEVER owe more ETH than it holds. Redemption is
-///           always priced against the actual ETH balance, so it is always
+///         - The contract can NEVER owe more USDC than it holds. Redemption is
+///           always priced against the actual USDC balance, so it is always
 ///           fully backed and can never become a scheme that pays early exits
 ///           from later deposits.
 ///         - Deposits and withdrawals do NOT move the rate: assets and supply
@@ -20,33 +25,34 @@ pragma solidity ^0.8.24;
 ///           the rate would reflect that honestly.
 ///         - No owner controls the rate. addYield() is permissionless.
 ///         - A 1:1 virtual offset (1 share / 1 wei asset) keeps the rate at
-///           exactly 1 ETH = 1 rETH from the first deposit and avoids
+///           exactly 1 USDC = 1 rUSDC from the first deposit and avoids
 ///           division by zero on an empty vault.
 ///
-///         Yield is generated off-chain by the protocol's staking / lending
-///         and returned to this contract via addYield(). The target rate is
+///         Yield is generated off-chain by the protocol's real-estate holdings
+///         (rent collected and property appreciation) and returned to this
+///         contract as USDC via addYield(). The target rate is
 ///         VARIABLE and NOT guaranteed — it reflects whatever is actually
 ///         funded. The contract starts exactly 1:1 (no profit, no loss).
-contract RETHVault {
-    string public constant name = "Roxx ETH";
-    string public constant symbol = "rETH";
+contract RUSDCVault {
+    string public constant name = "Reticence USDC";
+    string public constant symbol = "rUSDC";
     uint8 public constant decimals = 18;
 
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    // Virtual offsets. Kept at 1:1 so the vault reads exactly 1 ETH = 1 rETH
+    // Virtual offsets. Kept at 1:1 so the vault reads exactly 1 USDC = 1 rUSDC
     // from the very first deposit, while still avoiding division by zero and
     // keeping a basic guard against the empty-vault edge case.
     uint256 private constant VIRTUAL_SHARES = 1;
     uint256 private constant VIRTUAL_ASSETS = 1;
 
-    // Accounting of ETH backing the shares. Kept explicit (rather than reading
-    // address(this).balance) so a forced-send of ETH cannot skew the rate.
+    // Accounting of USDC backing the shares. Kept explicit (rather than reading
+    // address(this).balance) so a forced-send of USDC cannot skew the rate.
     uint256 public totalAssets;
 
-    // Simple reentrancy guard for functions that send ETH out.
+    // Simple reentrancy guard for functions that send USDC out.
     uint256 private _locked = 1;
 
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -66,27 +72,27 @@ contract RETHVault {
     // Rate / conversion views
     // ------------------------------------------------------------------
 
-    /// @notice ETH value of a given amount of rETH shares.
+    /// @notice USDC value of a given amount of rUSDC shares.
     function convertToAssets(uint256 shares) public view returns (uint256) {
         return (shares * (totalAssets + VIRTUAL_ASSETS)) / (totalSupply + VIRTUAL_SHARES);
     }
 
-    /// @notice rETH shares minted for a given amount of ETH assets.
+    /// @notice rUSDC shares minted for a given amount of USDC assets.
     function convertToShares(uint256 assets) public view returns (uint256) {
         return (assets * (totalSupply + VIRTUAL_SHARES)) / (totalAssets + VIRTUAL_ASSETS);
     }
 
-    /// @notice ETH value of ONE rETH (1e18), scaled to 1e18. Starts at 1e18 (1:1).
+    /// @notice USDC value of ONE rUSDC (1e18), scaled to 1e18. Starts at 1e18 (1:1).
     function exchangeRate() external view returns (uint256) {
         return convertToAssets(1e18);
     }
 
-    /// @notice Shares a depositor would receive for `assets` ETH right now.
+    /// @notice Shares a depositor would receive for `assets` USDC right now.
     function previewDeposit(uint256 assets) external view returns (uint256) {
         return convertToShares(assets);
     }
 
-    /// @notice ETH a holder would receive for redeeming `shares` right now.
+    /// @notice USDC a holder would receive for redeeming `shares` right now.
     function previewRedeem(uint256 shares) external view returns (uint256) {
         return convertToAssets(shares);
     }
@@ -95,9 +101,9 @@ contract RETHVault {
     // Deposit / Withdraw (always open)
     // ------------------------------------------------------------------
 
-    /// @notice Deposit ETH and mint rETH to msg.sender at the current rate.
+    /// @notice Deposit USDC and mint rUSDC to msg.sender at the current rate.
     function deposit() external payable returns (uint256 shares) {
-        require(msg.value > 0, "zero ETH");
+        require(msg.value > 0, "zero USDC");
         shares = convertToShares(msg.value);
         require(shares > 0, "zero shares");
         totalAssets += msg.value;
@@ -105,7 +111,7 @@ contract RETHVault {
         emit Deposit(msg.sender, msg.sender, msg.value, shares);
     }
 
-    /// @notice Plain ETH transfers deposit as well.
+    /// @notice Plain USDC transfers deposit as well.
     receive() external payable {
         uint256 shares = convertToShares(msg.value);
         require(shares > 0, "zero shares");
@@ -114,10 +120,10 @@ contract RETHVault {
         emit Deposit(msg.sender, msg.sender, msg.value, shares);
     }
 
-    /// @notice Burn `shares` rETH and receive the current ETH value. Always open.
+    /// @notice Burn `shares` rUSDC and receive the current USDC value. Always open.
     function redeem(uint256 shares) external nonReentrant returns (uint256 assets) {
         require(shares > 0, "zero shares");
-        require(balanceOf[msg.sender] >= shares, "insufficient rETH");
+        require(balanceOf[msg.sender] >= shares, "insufficient rUSDC");
         assets = convertToAssets(shares);
         require(assets > 0, "zero assets");
         require(assets <= totalAssets, "insufficient liquidity");
@@ -126,24 +132,24 @@ contract RETHVault {
         totalAssets -= assets;
 
         (bool ok, ) = msg.sender.call{value: assets}("");
-        require(ok, "ETH transfer failed");
+        require(ok, "USDC transfer failed");
         emit Withdraw(msg.sender, msg.sender, assets, shares);
     }
 
-    /// @notice Burn rETH to withdraw a specific ETH amount. Always open.
+    /// @notice Burn rUSDC to withdraw a specific USDC amount. Always open.
     function withdraw(uint256 assets) external nonReentrant returns (uint256 shares) {
         require(assets > 0, "zero assets");
         require(assets <= totalAssets, "insufficient liquidity");
         shares = convertToShares(assets);
         // round up so the vault never gives away value
         if (convertToAssets(shares) < assets) shares += 1;
-        require(balanceOf[msg.sender] >= shares, "insufficient rETH");
+        require(balanceOf[msg.sender] >= shares, "insufficient rUSDC");
 
         _burn(msg.sender, shares);
         totalAssets -= assets;
 
         (bool ok, ) = msg.sender.call{value: assets}("");
-        require(ok, "ETH transfer failed");
+        require(ok, "USDC transfer failed");
         emit Withdraw(msg.sender, msg.sender, assets, shares);
     }
 
@@ -151,18 +157,18 @@ contract RETHVault {
     // Yield — permissionless top-up that raises the rate for everyone
     // ------------------------------------------------------------------
 
-    /// @notice Add ETH yield to the vault. Mints NO shares, so the value of
-    ///         every existing rETH rises. Anyone can call it (typically the
-    ///         protocol returning staking / lending yield). There is no
+    /// @notice Add USDC yield to the vault. Mints NO shares, so the value of
+    ///         every existing rUSDC rises. Anyone can call it (typically the
+    ///         protocol paying in rent and property gains). There is no
     ///         privileged rate setter — the rate is always balances-derived.
     function addYield() external payable {
-        require(msg.value > 0, "zero ETH");
+        require(msg.value > 0, "zero USDC");
         totalAssets += msg.value;
         emit YieldAdded(msg.sender, msg.value, totalAssets);
     }
 
     // ------------------------------------------------------------------
-    // Minimal ERC-20 (rETH is a plain, transferable token)
+    // Minimal ERC-20 (rUSDC is a plain, transferable token)
     // ------------------------------------------------------------------
 
     function transfer(address to, uint256 value) external returns (bool) {

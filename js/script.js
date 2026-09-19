@@ -427,14 +427,17 @@
   }
 
   /* ============================================================
-     MINT rETH — swap UI (1:1 mirror + mint/redeem toggle)
+     MINT rUSDC — swap UI (1:1 mirror + mint/redeem toggle)
      ============================================================ */
   (function mintUI() {
     var panel = document.querySelector('.mint');
     if (!panel) return;
 
-    var cfg = window.ROXX_CONFIG || {};
+    var cfg = window.RETICENCE_CONFIG || {};
     var net = (cfg.networks && cfg.networks[cfg.network]) || null;
+    // Display symbols: ASSET is deposited (native USDC on Arc), SHARE is the vault token.
+    var ASSET = cfg.ASSET_SYMBOL || 'USDC';
+    var SHARE = cfg.SHARE_SYMBOL || 'rUSDC';
 
     var tabs = panel.querySelectorAll('.mint__tab');
     var amountInput = document.getElementById('mint-amount');
@@ -444,8 +447,8 @@
     var hint = document.getElementById('mint-hint');
     var balEl = document.getElementById('mint-balance');
     var maxBtn = document.getElementById('mint-max');
-    // Leave a little ETH for gas when using MAX.
-    var GAS_RESERVE = '0.001';
+    // Leave a little USDC for gas when using MAX (Arc fees are a fraction of a cent).
+    var GAS_RESERVE = '0.05';
     var payLabel = panel.querySelector('[data-role="pay-label"]');
     var getLabel = panel.querySelector('[data-role="get-label"]');
     var payAsset = panel.querySelector('[data-role="pay-asset"]');
@@ -457,9 +460,9 @@
     var signer = null;
     var reth = null;            // contract instance (write)
     var busy = false;
-    var ethBal = null;          // bigint — user's ETH balance
-    var rethBal = null;         // bigint — user's rETH balance
-    var rateWei = null;         // bigint — ETH value of 1e18 rETH (1e18 == 1:1)
+    var ethBal = null;          // bigint — user's native USDC balance (18-dec on Arc)
+    var rethBal = null;         // bigint — user's rUSDC balance
+    var rateWei = null;         // bigint — USDC value of 1e18 rUSDC (1e18 == 1:1)
 
     var hasEthers = typeof window.ethers !== 'undefined';
     var WAD = hasEthers ? 10n ** 18n : null;
@@ -513,25 +516,20 @@
 
     function short(a) { return a ? a.slice(0, 6) + '…' + a.slice(-4) : ''; }
 
-    var ETH_SVG = '<svg class="mint__asset-icon" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M12 2 L12 9.5 L18.5 12.3 Z" fill="#fff" fill-opacity="0.85"/>' +
-      '<path d="M12 2 L5.5 12.3 L12 9.5 Z" fill="#fff" fill-opacity="0.55"/>' +
-      '<path d="M12 22 L12 15.3 L18.5 13.6 Z" fill="#fff" fill-opacity="0.85"/>' +
-      '<path d="M12 22 L5.5 13.6 L12 15.3 Z" fill="#fff" fill-opacity="0.55"/>' +
-      '<path d="M12 14 L18.5 12.3 L12 9.5 Z" fill="#fff" fill-opacity="0.4"/>' +
-      '<path d="M12 14 L5.5 12.3 L12 9.5 Z" fill="#fff" fill-opacity="0.25"/></svg>';
-    var RETH_SVG = '<svg class="mint__asset-icon" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<defs><linearGradient id="rethg" x1="0" y1="0" x2="1" y2="1">' +
-      '<stop offset="0" stop-color="#F77F71"/><stop offset="1" stop-color="#A6FB89"/></linearGradient></defs>' +
-      '<path d="M12 2 L12 9.5 L18.5 12.3 Z" fill="url(#rethg)"/>' +
-      '<path d="M12 2 L5.5 12.3 L12 9.5 Z" fill="url(#rethg)" fill-opacity="0.7"/>' +
-      '<path d="M12 22 L12 15.3 L18.5 13.6 Z" fill="url(#rethg)"/>' +
-      '<path d="M12 22 L5.5 13.6 L12 15.3 Z" fill="url(#rethg)" fill-opacity="0.7"/>' +
-      '<path d="M12 14 L18.5 12.3 L12 9.5 Z" fill="url(#rethg)" fill-opacity="0.5"/>' +
-      '<path d="M12 14 L5.5 12.3 L12 9.5 Z" fill="url(#rethg)" fill-opacity="0.35"/></svg>';
+    // USDC: a plain coin. rUSDC: the same coin in the site's sky gradient.
+    var DOLLAR_PATH = '<path d="M12 6.4v11.2M14.4 9.1c-.3-1-1.2-1.6-2.4-1.6-1.4 0-2.5.8-2.5 1.9 0 2.6 5 1.4 5 4.1 0 1.2-1.1 2-2.5 2-1.3 0-2.3-.6-2.6-1.7" fill="none" stroke-width="1.5" stroke-linecap="round"/>';
+    var ASSET_SVG = '<svg class="mint__asset-icon" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="9.5" fill="#fff" fill-opacity="0.92"/>' +
+      DOLLAR_PATH.replace('fill="none"', 'fill="none" stroke="#1c3a6b"') + '</svg>';
+    var SHARE_SVG = '<svg class="mint__asset-icon" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<defs><linearGradient id="rusdcg" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#3f66aa"/><stop offset="1" stop-color="#7fa9d8"/></linearGradient></defs>' +
+      '<circle cx="12" cy="12" r="9.5" fill="url(#rusdcg)"/>' +
+      '<circle cx="12" cy="12" r="9.5" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-width="1"/>' +
+      DOLLAR_PATH.replace('fill="none"', 'fill="none" stroke="#fff"') + '</svg>';
 
     function assetMarkup(sym) {
-      var icon = sym === 'rETH' ? RETH_SVG : ETH_SVG;
+      var icon = sym === SHARE ? SHARE_SVG : ASSET_SVG;
       return icon + '<span>' + sym + '</span>';
     }
 
@@ -545,15 +543,15 @@
     function mirror() {
       var val = sanitize(amountInput.value);
       if (val === '' || !hasEthers) { outputInput.value = val; return; }
-      var rate = rateWei != null ? rateWei : WAD; // ETH per 1 rETH, 1e18-scaled
+      var rate = rateWei != null ? rateWei : WAD; // USDC per 1 rUSDC, 1e18-scaled
       var out;
       try {
         var inWei = window.ethers.parseEther(val);
         if (mode === 'mint') {
-          // rETH received = ETH_in / rate
+          // rUSDC received = USDC_in / rate
           out = (inWei * WAD) / rate;
         } else {
-          // ETH received = rETH_in * rate
+          // USDC received = rUSDC_in * rate
           out = (inWei * rate) / WAD;
         }
         var s = parseFloat(window.ethers.formatEther(out));
@@ -564,14 +562,14 @@
     }
 
     function refreshRateUI() {
-      // ETH value of 1 rETH, e.g. "1.0000"
+      // USDC value of 1 rUSDC, e.g. "1.0000"
       var rate = rateWei != null ? rateWei : WAD;
       var rStr = hasEthers ? parseFloat(window.ethers.formatEther(rate)).toFixed(4) : '1.0000';
-      setText('rate-value', '1 rETH = ' + rStr + ' ETH');
-      // Value of the user's rETH position in ETH
+      setText('rate-value', '1 ' + SHARE + ' = ' + rStr + ' ' + ASSET);
+      // Value of the user's rUSDC position in USDC
       if (account && rethBal != null && hasEthers) {
         var val = (rethBal * rate) / WAD;
-        setText('rate-position', fmt(val) + ' ETH');
+        setText('rate-position', fmt(val) + ' ' + ASSET);
       } else {
         setText('rate-position', '—');
       }
@@ -592,10 +590,10 @@
       if (!balEl) return;
       if (!account) { balEl.textContent = '0.000'; if (maxBtn) maxBtn.disabled = true; return; }
       if (mode === 'mint') {
-        balEl.textContent = fmt(ethBal) + ' ETH';
+        balEl.textContent = fmt(ethBal) + ' ' + ASSET;
         if (maxBtn) maxBtn.disabled = (ethBal == null || ethBal <= 0n);
       } else {
-        balEl.textContent = fmt(rethBal) + ' rETH';
+        balEl.textContent = fmt(rethBal) + ' ' + SHARE;
         if (maxBtn) maxBtn.disabled = (rethBal == null || rethBal <= 0n);
       }
     }
@@ -604,14 +602,14 @@
     function maxAmount() {
       if (!hasEthers) return null;
       if (mode === 'mint') {
-        // ETH balance minus a small gas reserve.
+        // USDC balance minus a small gas reserve (gas is paid in USDC on Arc).
         if (ethBal == null) return null;
         try {
           var reserve = window.ethers.parseEther(GAS_RESERVE);
           return ethBal > reserve ? ethBal - reserve : 0n;
         } catch (e) { return null; }
       } else {
-        // Withdraw: full rETH balance (gas is paid in ETH separately).
+        // Withdraw: full rUSDC balance (gas comes from the native USDC balance).
         return rethBal;
       }
     }
@@ -627,32 +625,32 @@
     function setSubmitLabel() {
       if (busy) return;
       if (!account) { submit.textContent = hasAnyWallet() ? 'Connect wallet' : 'Install a wallet'; return; }
-      submit.textContent = mode === 'mint' ? 'Mint rETH' : 'Withdraw ETH';
+      submit.textContent = mode === 'mint' ? 'Mint ' + SHARE : 'Withdraw ' + ASSET;
     }
 
     function applyMode() {
       var isMint = mode === 'mint';
-      var paySym = isMint ? 'ETH' : 'rETH';
-      var getSym = isMint ? 'rETH' : 'ETH';
+      var paySym = isMint ? ASSET : SHARE;
+      var getSym = isMint ? SHARE : ASSET;
 
       if (payLabel) payLabel.textContent = 'You pay';
       if (getLabel) getLabel.textContent = 'You receive';
-      if (payAsset) { payAsset.innerHTML = assetMarkup(paySym); payAsset.classList.toggle('mint__asset--r', paySym === 'rETH'); }
-      if (getAsset) { getAsset.innerHTML = assetMarkup(getSym); getAsset.classList.toggle('mint__asset--r', getSym === 'rETH'); }
+      if (payAsset) { payAsset.innerHTML = assetMarkup(paySym); payAsset.classList.toggle('mint__asset--r', paySym === SHARE); }
+      if (getAsset) { getAsset.innerHTML = assetMarkup(getSym); getAsset.classList.toggle('mint__asset--r', getSym === SHARE); }
 
       setSubmitLabel();
       refreshBalanceLabel();
       mirror();
 
       if (!account) {
-        hint.textContent = isMint ? 'Connect a wallet to mint rETH.' : 'Connect a wallet to withdraw ETH.';
+        hint.textContent = isMint ? 'Connect a wallet to mint ' + SHARE + '.' : 'Connect a wallet to withdraw ' + ASSET + '.';
         if (disconnectBtn) disconnectBtn.hidden = true;
       } else {
         var mx = maxAmount();
         var mxStr = mx != null ? fmt(mx) : '0.000';
         hint.textContent = isMint
-          ? 'Connected ' + short(account) + ' · up to ' + mxStr + ' rETH mintable'
-          : 'Connected ' + short(account) + ' · up to ' + mxStr + ' ETH withdrawable';
+          ? 'Connected ' + short(account) + ' · up to ' + mxStr + ' ' + SHARE + ' mintable'
+          : 'Connected ' + short(account) + ' · up to ' + mxStr + ' ' + ASSET + ' withdrawable';
         if (disconnectBtn) disconnectBtn.hidden = false;
       }
     }
@@ -685,8 +683,8 @@
     }
 
     function buildContract() {
-      if (!cfg.RETH_ADDRESS) { reth = null; return; }
-      reth = new window.ethers.Contract(cfg.RETH_ADDRESS, cfg.RETH_ABI, signer);
+      if (!cfg.VAULT_ADDRESS) { reth = null; return; }
+      reth = new window.ethers.Contract(cfg.VAULT_ADDRESS, cfg.VAULT_ABI, signer);
     }
 
     function loadBalances() {
@@ -888,7 +886,7 @@
     function submitTx() {
       if (busy) return;
       if (!account) { connect(); return; }
-      if (!cfg.RETH_ADDRESS || !reth) {
+      if (!cfg.VAULT_ADDRESS || !reth) {
         hint.textContent = 'Not live yet — the contract address will be announced soon.';
         return;
       }
@@ -902,15 +900,15 @@
       var isMint = mode === 'mint';
 
       if (isMint) {
-        if (ethBal != null && wei > ethBal) { hint.textContent = 'Amount exceeds your ETH balance.'; return; }
+        if (ethBal != null && wei > ethBal) { hint.textContent = 'Amount exceeds your ' + ASSET + ' balance.'; return; }
       } else {
-        if (rethBal != null && wei > rethBal) { hint.textContent = 'Amount exceeds your rETH balance.'; return; }
+        if (rethBal != null && wei > rethBal) { hint.textContent = 'Amount exceeds your ' + SHARE + ' balance.'; return; }
       }
 
       setBusy(true, isMint ? 'Minting…' : 'Withdrawing…');
       hint.textContent = 'Confirm the transaction in your wallet…';
 
-      // Mint: deposit ETH (wei = ETH). Withdraw: redeem rETH shares (wei = rETH).
+      // Mint: deposit native USDC as value. Withdraw: redeem vault shares.
       var call = isMint ? reth.deposit({ value: wei }) : reth.redeem(wei);
 
       call.then(function (tx) {
@@ -918,8 +916,8 @@
         return tx.wait();
       }).then(function (receipt) {
         var link = receipt && receipt.hash ? explorerTx(receipt.hash) : null;
-        hint.innerHTML = (isMint ? 'Minted rETH.' : 'Withdrew ETH.') +
-          (link ? ' <a href="' + link + '" target="_blank" rel="noopener" style="color:#A6FB89;text-decoration:underline;">view tx</a>' : '');
+        hint.innerHTML = (isMint ? 'Minted ' + SHARE + '.' : 'Withdrew ' + ASSET + '.') +
+          (link ? ' <a href="' + link + '" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;">view tx</a>' : '');
         setBusy(false);
         setSubmitLabel();
         return loadBalances();
@@ -986,7 +984,7 @@
       ySubmit.addEventListener('click', function () {
         if (busy) return;
         if (!account) { connect(); return; }
-        if (!cfg.RETH_ADDRESS || !reth) {
+        if (!cfg.VAULT_ADDRESS || !reth) {
           yHint.textContent = 'Not live yet — deploy the vault and set its address first.';
           return;
         }
@@ -995,7 +993,7 @@
         var wei;
         try { wei = window.ethers.parseEther(val); }
         catch (e) { yHint.textContent = 'Invalid amount.'; return; }
-        if (ethBal != null && wei > ethBal) { yHint.textContent = 'Amount exceeds your ETH balance.'; return; }
+        if (ethBal != null && wei > ethBal) { yHint.textContent = 'Amount exceeds your ' + ASSET + ' balance.'; return; }
 
         setBusy(true, 'Adding…');
         ySubmit.disabled = true;
@@ -1006,8 +1004,8 @@
           return tx.wait();
         }).then(function (receipt) {
           var link = receipt && receipt.hash ? explorerTx(receipt.hash) : null;
-          yHint.innerHTML = 'Yield added — every rETH is now worth more.' +
-            (link ? ' <a href="' + link + '" target="_blank" rel="noopener" style="color:#A6FB89;text-decoration:underline;">view tx</a>' : '');
+          yHint.innerHTML = 'Yield added — every ' + SHARE + ' is now worth more.' +
+            (link ? ' <a href="' + link + '" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;">view tx</a>' : '');
           setBusy(false);
           ySubmit.disabled = false;
           refreshYieldLabel();
@@ -1025,7 +1023,7 @@
       applyMode = function () {
         _origApplyMode();
         refreshYieldLabel();
-        if (account) yHint.textContent = 'Send earned ETH into the vault to raise the rate.';
+        if (account) yHint.textContent = 'Pay rent and property gains into the vault as ' + ASSET + ' to raise the rate.';
       };
       refreshYieldLabel();
     })();
@@ -1039,13 +1037,13 @@
     }
 
     function loadDashStats() {
-      if (!hasEthers || !cfg.RETH_ADDRESS || !net || !net.rpcUrls || !net.rpcUrls[0]) return;
+      if (!hasEthers || !cfg.VAULT_ADDRESS || !net || !net.rpcUrls || !net.rpcUrls[0]) return;
       var rpc = net.rpcUrls[0];
       if (rpc.indexOf('{API_KEY}') !== -1) return; // unconfigured key
       try {
         var ro = new window.ethers.JsonRpcProvider(rpc);
-        var c = new window.ethers.Contract(cfg.RETH_ADDRESS, cfg.RETH_ABI, ro);
-        Promise.all([ro.getBalance(cfg.RETH_ADDRESS), c.totalSupply()]).then(function (r) {
+        var c = new window.ethers.Contract(cfg.VAULT_ADDRESS, cfg.VAULT_ABI, ro);
+        Promise.all([ro.getBalance(cfg.VAULT_ADDRESS), c.totalSupply()]).then(function (r) {
           var eth = fmtNum(r[0]);
           var sup = fmtNum(r[1]);
           setText('dash-eth-locked', eth);
@@ -1057,7 +1055,7 @@
     }
     loadDashStats();
 
-    // reflect the connected user's rETH into the dashboard "Your rETH" card
+    // reflect the connected user's rUSDC into the dashboard "Your rUSDC" card
     var _origLoadBalances = loadBalances;
     loadBalances = function () {
       return _origLoadBalances().then(function () {

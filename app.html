@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Reticence App — Mint rETH</title>
-  <meta name="description" content="Mint and redeem rETH 1:1 with ETH on Robinhood Chain." />
+  <title>Reticence App — Mint rUSDC</title>
+  <meta name="description" content="Swap USDC for rUSDC one to one on Arc. Backed by real property, paid by real rent." />
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -52,9 +52,9 @@
     <div class="app-page__grid" aria-hidden="true"></div>
     <section class="app-shell" aria-labelledby="app-title">
       <div class="app-shell__intro">
-        <div class="app-chip"><span class="app-chip__dot"></span> Robinhood Chain</div>
-        <h1 class="app-shell__title" id="app-title">Mint rETH</h1>
-        <p class="app-shell__lede">Deposit ETH to mint rETH. Its value accrues as the protocol adds yield, and you can withdraw to ETH at the current rate anytime.</p>
+        <div class="app-chip"><span class="app-chip__dot"></span> Arc</div>
+        <h1 class="app-shell__title" id="app-title">Mint rUSDC</h1>
+        <p class="app-shell__lede">Swap USDC for rUSDC, one to one. Your rUSDC is backed by real properties: the rent they earn and the value they gain are paid into the vault, so it is worth more USDC over time, and you can withdraw at the current rate anytime.</p>
       </div>
 
       <div class="mint mint--app">
@@ -65,26 +65,27 @@
           </div>
           <div class="mint__field">
             <div class="mint__field-top"><span class="mint__field-label" data-role="pay-label">You pay</span><span class="mint__field-bal">Balance: <b id="mint-balance">0.000</b> <button type="button" class="mint__max" id="mint-max">MAX</button></span></div>
-            <div class="mint__field-row"><input class="mint__input" id="mint-amount" type="text" inputmode="decimal" placeholder="0.0" value="1.0" /><span class="mint__asset" data-role="pay-asset"><span class="mint__asset-dot"></span>ETH</span></div>
+            <div class="mint__field-row"><input class="mint__input" id="mint-amount" type="text" inputmode="decimal" placeholder="0.0" value="1.0" /><span class="mint__asset" data-role="pay-asset"><span class="mint__asset-dot"></span>USDC</span></div>
           </div>
           <div class="mint__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M9 15L4 10M9 15L14 10" stroke="#fff" stroke-opacity="0.7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="mint__field">
             <div class="mint__field-top"><span class="mint__field-label" data-role="get-label">You receive</span></div>
-            <div class="mint__field-row"><input class="mint__input" id="mint-output" type="text" readonly value="1.0" /><span class="mint__asset mint__asset--r" data-role="get-asset"><span class="mint__asset-dot"></span>rETH</span></div>
+            <div class="mint__field-row"><input class="mint__input" id="mint-output" type="text" readonly value="1.0" /><span class="mint__asset mint__asset--r" data-role="get-asset"><span class="mint__asset-dot"></span>rUSDC</span></div>
           </div>
           <button class="mint__submit" id="mint-submit" type="button">Connect wallet</button>
           <button class="mint__disconnect" id="mint-disconnect" type="button" hidden>Disconnect</button>
-          <p class="mint__hint" id="mint-hint">Connect a wallet to mint rETH.</p>
+          <p class="mint__hint" id="mint-hint">Connect a wallet to mint rUSDC.</p>
         </div>
         <div class="mint__side">
-          <div class="mint__stat"><span>Exchange rate</span><b id="rate-value">1 rETH = 1.0000 ETH</b></div>
-          <div class="mint__stat"><span>Your rETH value</span><b id="rate-position">—</b></div>
+          <div class="mint__stat"><span>Exchange rate</span><b id="rate-value">1 rUSDC = 1.0000 USDC</b></div>
+          <div class="mint__stat"><span>Your rUSDC value</span><b id="rate-position">—</b></div>
           <div class="mint__stat"><span>Target yield</span><b>~8% APY · variable</b></div>
-          <div class="mint__stat"><span>Backing</span><b>100% ETH</b></div>
-          <div class="mint__stat"><span>Network</span><b>Robinhood Chain</b></div>
-          <div class="mint__stat mint__stat--ca"><span>Contract</span><a href="https://robinhoodchain.blockscout.com/address/0x7D2c73f3791268e45c957b75D6aBFde707FA6000" target="_blank" rel="noopener" style="color:#A6FB89;font-family:var(--mono);font-size:12px;">0x7D2c73…6000</a></div>
+          <div class="mint__stat"><span>Yield source</span><b>Real rent</b></div>
+          <div class="mint__stat"><span>Backing</span><b>100% USDC</b></div>
+          <div class="mint__stat"><span>Network</span><b>Arc</b></div>
+          <div class="mint__stat mint__stat--ca"><span>Contract</span><b>To Be Announced</b></div>
         </div>
-        <p class="mint__disclaimer">Yield is generated by the protocol's staking and lending and returned to the vault. The rate reflects the ETH actually backing rETH — it is variable and not guaranteed.</p>
+        <p class="mint__disclaimer">Yield is earned from real property — the rent it collects and the value it gains — and returned to the vault as USDC. The rate reflects the USDC actually backing rUSDC — it is variable and not guaranteed.</p>
       </div>
 
       <!-- Operator: Add yield -->
@@ -94,10 +95,10 @@
           <span class="yield-panel__tag">Operator</span>
         </summary>
         <div class="yield-panel__body">
-          <p class="yield-panel__note">Send ETH earned by the protocol's staking and lending into the vault. This mints no rETH, so it raises the redemption value of every rETH holder. Anyone can top up; typically only the protocol does.</p>
+          <p class="yield-panel__note">Pay rent and property gains into the vault as USDC. This mints no rUSDC, so it raises the redemption value of every rUSDC holder. Anyone can top up; typically only the protocol does.</p>
           <div class="yield-panel__row">
             <input class="mint__input yield-panel__input" id="yield-amount" type="text" inputmode="decimal" placeholder="0.0" />
-            <span class="mint__asset"><span class="mint__asset-dot"></span>ETH</span>
+            <span class="mint__asset"><span class="mint__asset-dot"></span>USDC</span>
           </div>
           <button class="mint__submit yield-panel__submit" id="yield-submit" type="button">Connect wallet</button>
           <p class="mint__hint" id="yield-hint">Connect a wallet to add yield.</p>
@@ -108,14 +109,14 @@
 
   <footer class="foot app-footer">
     <div class="foot__top">
-      <div class="foot__brandcol"><span class="brand__name foot__brand">Reticence</span><p class="foot__blurb">Mint rETH 1:1 with ETH on Robinhood Chain.</p><a class="foot__email" href="https://x.com/TryReticence" target="_blank" rel="noopener">@TryReticence on X</a></div>
+      <div class="foot__brandcol"><span class="brand__name foot__brand">Reticence</span><p class="foot__blurb">1 USDC = 1 rUSDC. Backed by real property, paid by real rent.</p><a class="foot__email" href="https://x.com/TryReticence" target="_blank" rel="noopener">@TryReticence on X</a></div>
       <div class="foot__links">
-        <div class="foot__group"><h4>App</h4><a href="index.html">Home</a><a href="app.html">Mint rETH</a><a href="index.html#status">Status</a></div>
-        <div class="foot__group"><h4>rETH details</h4><p class="foot__detail"><span>Network</span><b>Robinhood Chain</b></p><p class="foot__detail"><span>Chain ID</span><b>4663</b></p><p class="foot__detail"><span>Symbol</span><b>rETH</b></p></div>
-        <div class="foot__group"><h4>Contract</h4><p class="foot__detail"><span>CA</span><code class="foot__contract-address">0x7D2c73f3791268e45c957b75D6aBFde707FA6000</code></p><a href="https://robinhoodchain.blockscout.com/address/0x7D2c73f3791268e45c957b75D6aBFde707FA6000" target="_blank" rel="noopener">View on Blockscout</a></div>
+        <div class="foot__group"><h4>App</h4><a href="index.html">Home</a><a href="app.html">Mint rUSDC</a><a href="index.html#status">Status</a></div>
+        <div class="foot__group"><h4>rUSDC details</h4><p class="foot__detail"><span>Network</span><b>Arc</b></p><p class="foot__detail"><span>Chain ID</span><b>5042</b></p><p class="foot__detail"><span>Symbol</span><b>rUSDC</b></p></div>
+        <div class="foot__group"><h4>Contract</h4><p class="foot__detail"><span>CA</span><b>To Be Announced</b></p><a href="https://explorer.arc.io" target="_blank" rel="noopener">View on Arc Explorer</a></div>
       </div>
     </div>
-    <div class="foot__bottom"><span>© <span id="year"></span> Reticence Protocol</span><span class="foot__mono">[ rETH ] · MAINNET</span></div>
+    <div class="foot__bottom"><span>© <span id="year"></span> Reticence Protocol</span><span class="foot__mono">[ rUSDC ] · MAINNET</span></div>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>

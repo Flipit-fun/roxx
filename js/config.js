@@ -1,40 +1,46 @@
 /* ============================================================
-   ROXX — chain + contract configuration
+   RETICENCE — chain + contract configuration
    ------------------------------------------------------------
-   Robinhood Chain is an Arbitrum L2 with ETH as the native gas
-   token. Fill in RETH_ADDRESS after you deploy RETH.sol.
-   Docs: https://docs.robinhood.com/chain/connecting/
+   Arc is Circle's EVM Layer-1 where USDC is the NATIVE gas token,
+   represented with 18 decimals at the EVM level. That means wallet
+   balances, msg.value and the vault's accounting are all USDC scaled
+   by 1e18 — the same model as wei — so no ERC-20 approve step exists.
+   Fill in VAULT_ADDRESS after you deploy contracts/RUSDCVault.sol.
+   Network reference: https://docs.arc.io/arc/references/connect-to-arc
    ============================================================ */
-window.ROXX_CONFIG = {
+window.RETICENCE_CONFIG = {
   // Which network the front end targets: "mainnet" or "testnet".
   network: 'mainnet',
 
-  // Deployed RETHVault (accruing vault) on Robinhood Chain mainnet (chain 4663).
-  RETH_ADDRESS: '0x7D2c73f3791268e45c957b75D6aBFde707FA6000',
+  // Display symbols. ASSET is what users deposit, SHARE is what they receive.
+  ASSET_SYMBOL: 'USDC',
+  SHARE_SYMBOL: 'rUSDC',
+
+  // Deployed RUSDCVault (accruing vault) on Arc. Empty until deployed —
+  // the app then shows "To Be Announced" and disables minting.
+  VAULT_ADDRESS: '',
 
   networks: {
     mainnet: {
-      // 4663 -> hex
-      chainId: '0x1237',
-      chainName: 'Robinhood Chain',
-      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      // Alchemy is the recommended provider. Swap {API_KEY} for your key,
-      // or replace with any other Robinhood Chain RPC you use.
-      rpcUrls: ['https://rpc.mainnet.chain.robinhood.com'],
-      blockExplorerUrls: ['https://robinhoodchain.blockscout.com']
+      // 5042 -> hex
+      chainId: '0x13b2',
+      chainName: 'Arc',
+      nativeCurrency: { name: 'USD Coin', symbol: 'USDC', decimals: 18 },
+      rpcUrls: ['https://rpc.mainnet.arc.io'],
+      blockExplorerUrls: ['https://explorer.arc.io']
     },
     testnet: {
-      // 46630 -> hex
-      chainId: '0xB626',
-      chainName: 'Robinhood Chain Testnet',
-      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      rpcUrls: ['https://robinhood-testnet.g.alchemy.com/v2/{API_KEY}'],
-      blockExplorerUrls: ['https://explorer.testnet.chain.robinhood.com']
+      // 5042002 -> hex
+      chainId: '0x4cef52',
+      chainName: 'Arc Testnet',
+      nativeCurrency: { name: 'USD Coin', symbol: 'USDC', decimals: 18 },
+      rpcUrls: ['https://rpc.testnet.arc.io'],
+      blockExplorerUrls: ['https://explorer.testnet.arc.io']
     }
   },
 
-  // ABI for the accruing vault (matches contracts/RETHVault.sol).
-  RETH_ABI: [
+  // ABI for the accruing vault (matches contracts/RUSDCVault.sol).
+  VAULT_ABI: [
     'function deposit() payable returns (uint256)',
     'function redeem(uint256 shares) returns (uint256)',
     'function withdraw(uint256 assets) returns (uint256)',
