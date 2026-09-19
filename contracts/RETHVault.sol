@@ -23,8 +23,9 @@ pragma solidity ^0.8.24;
 ///           exactly 1 ETH = 1 rETH from the first deposit and avoids
 ///           division by zero on an empty vault.
 ///
-///         Yield is generated off-chain by the protocol's staking / lending
-///         and returned to this contract via addYield(). The target rate is
+///         Yield is generated off-chain by the protocol's real-estate holdings
+///         (rent collected and property appreciation) and returned to this
+///         contract as ETH via addYield(). The target rate is
 ///         VARIABLE and NOT guaranteed — it reflects whatever is actually
 ///         funded. The contract starts exactly 1:1 (no profit, no loss).
 contract RETHVault {
@@ -153,7 +154,7 @@ contract RETHVault {
 
     /// @notice Add ETH yield to the vault. Mints NO shares, so the value of
     ///         every existing rETH rises. Anyone can call it (typically the
-    ///         protocol returning staking / lending yield). There is no
+    ///         protocol paying in rent and property gains). There is no
     ///         privileged rate setter — the rate is always balances-derived.
     function addYield() external payable {
         require(msg.value > 0, "zero ETH");

@@ -1025,7 +1025,7 @@
       applyMode = function () {
         _origApplyMode();
         refreshYieldLabel();
-        if (account) yHint.textContent = 'Send earned ETH into the vault to raise the rate.';
+        if (account) yHint.textContent = 'Pay rent and property gains into the vault as ETH to raise the rate.';
       };
       refreshYieldLabel();
     })();

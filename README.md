@@ -2,7 +2,7 @@
 
 A single-page site for **rETH** on Robinhood Chain (chain ID 4663).
 
-- Deposit ETH to mint **rETH**; its redemption value accrues as protocol yield is added to the vault.
+- Swap ETH for **rETH** one to one; its redemption value accrues as yield from real property (rent and appreciation) is paid into the vault.
 - Withdraw rETH back to ETH at the live rate, always open.
 - Vanilla HTML/CSS/JS — no build step. Wallet integration via ethers.js (CDN) with EIP-6963 multi-wallet support.
 
